@@ -1,4 +1,4 @@
-package mk.ukim.finki.deals_n_steals.deals_n_steals;
+package mk.ukim.finki.deals_n_steals;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
