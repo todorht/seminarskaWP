@@ -1,6 +1,7 @@
 package mk.ukim.finki.deals_n_steals.model;
 
 import lombok.Data;
+import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
