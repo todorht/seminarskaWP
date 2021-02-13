@@ -1,4 +1,4 @@
-package mk.ukim.finki.deals_n_steals.model;
+package mk.ukim.finki.deals_n_steals.model.enumeration;
 
 import org.springframework.security.core.GrantedAuthority;
 

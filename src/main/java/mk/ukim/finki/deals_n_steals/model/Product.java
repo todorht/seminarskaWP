@@ -2,6 +2,7 @@ package mk.ukim.finki.deals_n_steals.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Value;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 
 import javax.persistence.*;
@@ -35,4 +36,11 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name, Size size, Float price, String description, String base64Image) {
+        this.base64Image = base64Image;
+        this.name = name;
+        this.size = size;
+        this.price = price;
+        this.description = description;
+    }
 }

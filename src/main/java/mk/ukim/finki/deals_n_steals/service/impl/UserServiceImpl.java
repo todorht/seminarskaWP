@@ -1,19 +1,16 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
-import mk.ukim.finki.deals_n_steals.model.Role;
+import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.User;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUsernameOrPasswordException;
 import mk.ukim.finki.deals_n_steals.model.exception.PasswordDoNotMatchException;
 import mk.ukim.finki.deals_n_steals.model.exception.UserNameExistsException;
 import mk.ukim.finki.deals_n_steals.repository.jpa.UserRepository;
 import mk.ukim.finki.deals_n_steals.service.UserService;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 @Service
 public class UserServiceImpl implements UserService {
