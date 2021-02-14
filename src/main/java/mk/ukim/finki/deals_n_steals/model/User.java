@@ -21,10 +21,13 @@ public class User implements UserDetails {
     private String name;
     private String surname;
 
-
+    @Transient
     private boolean isAccountNonExpired = true;
+    @Transient
     private boolean isAccountNonLocked = true;
+    @Transient
     private boolean isCredentialsNonExpired = true;
+    @Transient
     private boolean isEnabled = true;
 
     private Role role;
@@ -38,13 +41,6 @@ public class User implements UserDetails {
         this.name = name;
         this.surname = surname;
         this.role = role;
-    }
-
-    public User(String username, String password, String name, String surname) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
     }
 
     @Override
