@@ -15,6 +15,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "image")
+    @Lob
     private String base64Image;
 
     @NotNull
@@ -43,4 +45,15 @@ public class Product {
         this.category = category;
         this.description = description;
     }
+
+    public Product(String name, Size size, Float price, Category category, String description, String base64Image){
+        this.name = name;
+        this.size = size;
+        this.price = price;
+        this.category = category;
+        this.description = description;
+        this.base64Image = base64Image;
+    }
+
+
 }

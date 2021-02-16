@@ -8,6 +8,7 @@ import mk.ukim.finki.deals_n_steals.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,8 +45,9 @@ public class ProductController {
                                     @RequestParam Size size,
                                     @RequestParam Float price,
                                     @RequestParam String category,
-                                    @RequestParam String description) throws IOException {
-        productService.save(name, size, price, category, description);
+                                    @RequestParam String description,
+                                    @RequestParam MultipartFile image) throws IOException {
+        productService.save(name, size, price, category, description, image);
         return "redirect:/products";
     }
 
@@ -63,12 +65,13 @@ public class ProductController {
 
     @PostMapping("/{id}")
     public String addNewProductPage(@PathVariable Long id,
-            @RequestParam String name,
-            @RequestParam Size size,
-            @RequestParam Float price,
-            @RequestParam String category,
-            @RequestParam String description) throws IOException {
-        productService.editProduct(id,name, size, price, category, description);
+                                    @RequestParam String name,
+                                    @RequestParam Size size,
+                                    @RequestParam Float price,
+                                    @RequestParam String category,
+                                    @RequestParam String description,
+                                    @RequestParam MultipartFile image) throws IOException {
+        productService.editProduct(id ,name, size, price, category, description, image);
         return "redirect:/products";
     }
 

@@ -38,21 +38,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(String name, Size size, float price, String cat, String description) throws IOException {
+    public Product save(String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException {
         if(name==null || name.isEmpty() || size==null)
             throw new BadArgumentsException();
         Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
-        //byte[] bytes = image.getBytes();
-        //String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
-        return  this.productRepository.save(new Product(name,size, price, category, description));
+        byte[] bytes = image.getBytes();
+        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
+        return  this.productRepository.save(new Product(name,size, price, category, description, base64Image));
     }
 
     @Override
-    public Product editProduct(Long id, String name, Size size, float price, String cat, String description) throws IOException {
+    public Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException {
         Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
-//        if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
-//            throw new BadArgumentsException();
-        if(name==null || name.isEmpty() || size==null)
+        if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
             throw new BadArgumentsException();
         Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
         product.setName(name);
@@ -60,9 +58,9 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(price);
         product.setCategory(category);
         product.setDescription(description);
-//        byte[] bytes = image.getBytes();
-//        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
-//        product.setBase64Image(base64Image);
+        byte[] bytes = image.getBytes();
+        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
+        product.setBase64Image(base64Image);
         return this.productRepository.save(product);
     }
 
