@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+</head>
+<body>
+    <form method="POST" action="/products">
+        <!--<label for="image">Image</label>
+        <input name="image" id="image" type="file">-->
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name">
+        <label>Size: </label>
+        <select name="size">
+            <option th:each="size : ${sizes}"
+                    th:value="${size}"
+                    th:text="${size}">
+            </option>
+        </select>
+        <label for="price">Price: </label>
+        <input type="number" name="price" id="price">
+        <label>Category </label>
+        <select name="category">
+            <option th:each="cat : ${categories}"
+                    th:value="${cat?.name}"
+                    th:text="${cat?.name}">
+            </option>
+        </select>
+        <label for="description">Description: </label>
+        <input type="text" name="description" id="description">
+
+        <button>Submit</button>
+    </form>
+</body>
+</html>

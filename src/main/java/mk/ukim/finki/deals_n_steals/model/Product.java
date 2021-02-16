@@ -36,11 +36,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, Size size, Float price, String description, String base64Image) {
-        this.base64Image = base64Image;
+    public Product(String name, Size size, Float price, Category category, String description){
         this.name = name;
         this.size = size;
         this.price = price;
+        this.category = category;
         this.description = description;
     }
 }
