@@ -12,7 +12,7 @@ public interface ProductService {
     List<Product> findAll();
     Product findById(Long id);
 
-    Product save(String name, Size size, float price, String cat, String description) throws IOException;
-    Product editProduct(Long id, String name, Size size, float price, String cat, String description) throws IOException;
+    Product save(String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;
+    Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;
     void deleteById(Long id);
 }

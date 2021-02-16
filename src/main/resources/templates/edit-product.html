@@ -6,7 +6,7 @@
 <body>
 <!-- The form should submit to ProductsController.create or  ProductsController.update, depending on whether we are
 creating or editing a product -->
-<form method="POST" th:action="@{'/products/{id}' (id=${product?.id})}">
+<form method="POST" th:action="@{'/products/{id}' (id=${product?.id})}" enctype="multipart/form-data">
     <div>
         <label for="name">Name</label>
         <input type="text"
@@ -41,6 +41,10 @@ creating or editing a product -->
     <div>
         <label for="description">Description: </label>
         <input type="text" name="description" th:value="${product?.description}" id="description">
+    </div>
+    <div class="form-group">
+        <label for="image">Image</label>
+        <input name="image" id="image" type="file" accept="image/png, image/jpeg"/>
     </div>
 
     <button id="submit" type="submit">Submit</button>
