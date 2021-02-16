@@ -13,6 +13,6 @@ public interface ProductService {
     Product findById(Long id);
 
     Product save(String name, Size size, float price, String cat, String description) throws IOException;
-    Product editProduct(Long id, String name, Size size, Float price, String description, MultipartFile base64Image) throws IOException;
+    Product editProduct(Long id, String name, Size size, float price, String cat, String description) throws IOException;
     void deleteById(Long id);
 }

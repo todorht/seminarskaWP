@@ -48,18 +48,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product editProduct(Long id, String name, Size size, Float price, String description, MultipartFile image) throws IOException {
+    public Product editProduct(Long id, String name, Size size, float price, String cat, String description) throws IOException {
         Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
-        if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
+//        if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
+//            throw new BadArgumentsException();
+        if(name==null || name.isEmpty() || size==null)
             throw new BadArgumentsException();
+        Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
         product.setName(name);
         product.setSize(size);
         product.setPrice(price);
+        product.setCategory(category);
         product.setDescription(description);
-        byte[] bytes = image.getBytes();
-        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
-        product.setBase64Image(base64Image);
-        return product;
+//        byte[] bytes = image.getBytes();
+//        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
+//        product.setBase64Image(base64Image);
+        return this.productRepository.save(product);
     }
 
     @Override

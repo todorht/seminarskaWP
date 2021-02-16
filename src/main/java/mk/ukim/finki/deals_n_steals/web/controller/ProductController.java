@@ -1,6 +1,5 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
-import mk.ukim.finki.deals_n_steals.model.Category;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
@@ -9,7 +8,6 @@ import mk.ukim.finki.deals_n_steals.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,12 +28,11 @@ public class ProductController {
     public String getProductPage(Model model) {
         List<Product> products = this.productService.findAll();
         model.addAttribute("products", products);
-        return "index";
+        return "products";
     }
 
-    @GetMapping("/add-new")
+    @GetMapping("/add-product")
     public String getNewProductPage(Model model) {
-        //za category vidi shto kako kje se stava
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("sizes", Size.values());
         return "add-product";
@@ -52,13 +49,27 @@ public class ProductController {
         return "redirect:/products";
     }
 
+
+
     @GetMapping("/{id}/edit")
     public String editProductPage(Model model, @PathVariable Long id) {
-        //za category vidi shto kako kje se stava
         Product product = this.productService.findById(id);
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("sizes", Size.values());
         model.addAttribute("product", product);
-        return " ";
+        return "edit-product";
 
+    }
+
+    @PostMapping("/{id}")
+    public String addNewProductPage(@PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam Size size,
+            @RequestParam Float price,
+            @RequestParam String category,
+            @RequestParam String description) throws IOException {
+        productService.editProduct(id,name, size, price, category, description);
+        return "redirect:/products";
     }
 
     @PostMapping("/{id}/delete")
