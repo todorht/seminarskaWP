@@ -19,7 +19,7 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
     }
-
+    //TODO: maping za shopping-carts, da otvori samo koshnichka bez ID-inja
 
     @PostMapping("/{productId}/add-product")
     public String addProductToShoppingCart(@PathVariable Long productId) {
