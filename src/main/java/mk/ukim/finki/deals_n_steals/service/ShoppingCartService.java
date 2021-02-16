@@ -18,5 +18,4 @@ public interface ShoppingCartService {
                                                Long productId);
 
     ShoppingCart cancelActiveShoppingCart(String userId);
-
 }
