@@ -36,11 +36,9 @@ public class ProductServiceImpl implements ProductService {
     public Product save(String name, Size size, float price, String description, MultipartFile image) throws IOException {
         if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
             throw new BadArgumentsException();
-
         byte[] bytes = image.getBytes();
         String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
         return  new Product(name,size, price, description, base64Image);
-
     }
 
     @Override
