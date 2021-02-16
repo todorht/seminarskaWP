@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+<!-- The form should submit to ProductsController.create or  ProductsController.update, depending on whether we are
+creating or editing a product -->
+<form method="POST" th:action="@{'/products/{id}' (id=${product?.id})}">
+    <div>
+        <label for="name">Name</label>
+        <input type="text"
+               id="name"
+               name="name"
+               th:value="${product?.name}"
+               required>
+    </div>
+    <div>
+        <label>Size: </label>
+        <select name="size">
+            <option th:each="size : ${sizes}"
+                    th:value="${size}"
+                    th:text="${size}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="price">Price</label>
+        <input type="number"
+               id="price"
+               name="price"
+               th:value="${product?.price}"
+               required>
+    </div>
+    <div>
+        <label>Category</label><br/>
+        <select name="category">
+            <option th:each="cat : ${categories}" th:value="${cat.name}" th:text="${cat.name}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="description">Description: </label>
+        <input type="text" name="description" th:value="${product?.description}" id="description">
+    </div>
+
+    <button id="submit" type="submit">Submit</button>
+    <a id="back" href="/products" type="button" class="btn btn-primary">Back to products</a>
+</form>
+</body>
+</html>
