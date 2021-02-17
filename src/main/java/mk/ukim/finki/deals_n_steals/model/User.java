@@ -17,7 +17,6 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "username")
     private String username;
     private String password;
     private String name;

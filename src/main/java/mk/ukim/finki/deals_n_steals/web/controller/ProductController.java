@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -71,7 +72,7 @@ public class ProductController {
                                     @RequestParam MultipartFile image) throws IOException {
         Product product = productService.findById(id);
         if(product!=null)
-            productService.editProduct(id ,name, size, price, category, description, image);
+            productService.editProduct(id, name, size, price, category, description, image);
         else
             productService.save(name, size, price, category, description, image);
         return "redirect:/products";

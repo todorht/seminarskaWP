@@ -1,5 +1,6 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -30,9 +32,10 @@ public class ShoppingCartController {
     public String getShoppingCartPage(Model model){
         String username = this.authService.getCurrentUserId();
         ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(username,CartStatus.CREATED);
-        model.addAttribute("products", shoppingCart.getProducts());
+        List<Product> products = shoppingCart.getProducts();
+        model.addAttribute("products", products);
         model.addAttribute("bodyContent","shopping-cart");
-        return "shopping-cart";
+        return "master-details";
     }
 
     @PostMapping("/add-product/{id}")

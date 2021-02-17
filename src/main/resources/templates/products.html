@@ -5,47 +5,48 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th></th>
-                        <th></th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </thead>
                         <tbody>
-                        <tr th:each="product : ${products}">
-                            <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
-                            <td th:text="${product.name}">product name</td>
-                            <td th:text="${product.size}">product size</td>
-                            <td th:text="'$'+${product.price}">product price</td>
-                            <td th:text="${product.category?.name}">product category</td>
-                            <td th:text="${product.description}">product description</td>
-                            <td>
-                                <form method="POST" th:action="@{'/delete/{id}' (id=${product.id})}">
-                                    <button class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form method="GET" th:action="@{'/edit/{id}' (id=${product.id})}">
-                                    <button class="btn btn-primary">Edit</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
-                                <th:block >
-                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Add product to cart</i></button>
-                                </th:block>
-                                </form>
-                            </td>
-                        </tr>
+                            <tr th:each="product : ${products}">
+                                <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
+                                <td th:text="${product.name}">product name</td>
+                                <td th:text="${product.size}">product size</td>
+                                <td th:text="'$'+${product.price}">product price</td>
+                                <td th:text="${product.category?.name}">product category</td>
+                                <td th:text="${product.description}">product description</td>
+                                <td>
+                                    <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                        <th:block >
+                                            <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                                        </th:block>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="GET" th:action="@{'/edit/{id}' (id=${product.id})}">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST" th:action="@{'/delete/{id}' (id=${product.id})}">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-             <a class="btn btn-default" href="/add-product">Add new product</a>
+             <a class="btn btn-block btn-dark add-product-btn" href="/add-product">Add new product</a>
             </th:block>
         </div>
     </div>

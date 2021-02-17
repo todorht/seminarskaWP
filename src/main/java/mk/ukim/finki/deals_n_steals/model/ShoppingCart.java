@@ -20,7 +20,7 @@ public class ShoppingCart{
 
     private String username;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
 
     @Enumerated(EnumType.STRING)

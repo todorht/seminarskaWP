@@ -35,7 +35,7 @@ public class LoginController {
         try {
             user = this.authService.login(request.getParameter("username")
                     ,request.getParameter("password"));
-            request.getSession().setAttribute("username", user.getUsername());
+            request.getSession().setAttribute("user", user);
             return "redirect:/products";
         } catch (InvalidUserCredentialsException exception){
             model.addAttribute("error", exception.getMessage());

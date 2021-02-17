@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException {
         Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
-        if(name==null || name.isEmpty() || size==null || image == null && image.getName().isEmpty())
+        if(name==null || name.isEmpty() || size==null)
             throw new BadArgumentsException();
         Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
         product.setName(name);
@@ -58,8 +58,13 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(price);
         product.setCategory(category);
         product.setDescription(description);
-        byte[] bytes = image.getBytes();
-        String base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
+        String base64Image;
+        if(image.isEmpty()){
+            byte[] bytes = image.getBytes();
+            base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
+        }
+        else
+            base64Image = product.getBase64Image();
         product.setBase64Image(base64Image);
         return this.productRepository.save(product);
     }

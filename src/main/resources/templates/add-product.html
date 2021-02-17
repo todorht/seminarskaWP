@@ -1,65 +1,67 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
-    <div class="container">
-        <div class="row">
-            <form method="POST" th:action="@{'/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
-                <div class="form-group mb-2 mt-2">
-                <label for="name">Name: </label>
-                <input class="form-control"
-                       type="text"
-                       name="name"
-                       id="name"
-                       th:value="${product?.name}">
-                </div>
-                <div class="form-group mb-2">
-                    <label>Category: </label>
-                    <select class="form-control"
-                            name="category">
-                        <option th:each="cat : ${categories}"
-                                th:value="${cat?.name}"
-                                th:text="${cat?.name}"
-                                th:selected="${product?.category != null && product?.category.name == cat.name}">
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                <div class="form-group mb-2">
-                <label for="price">Price: </label>
-                <input class="form-control"
-                       type="number"
-                       name="price"
-                       id="price"
-                       th:value="${product?.price}">
-                </div>
-                <div class="form-group mb-2">
-                <label for="description">Description: </label>
-                <textarea class="form-control"
-                          rows="3"
-                          name="description"
-                          id="description"
-                          th:text="${product?.description}"></textarea>
-                </div>
-                    <label>Size: </label>
-                    <label th:each="size: ${sizes}" class="radio-inline mb-2">
-                        <input class="mx-2" type="radio" name="size" th:value="${size}" th:text="${size}" th:field="${product.size}">
-                    </label>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="image">Image</label>
-                    <img th:if="${product!=null}" th:src="${product?.base64Image}" width="200" />
-                </div>
-                <div class="form-group mb-2">
-                    <input name="image" id="image" type="file" accept="image/png, image/jpeg"/>
-                </div>
+    <main class="flex-shrink-0">
+        <div class="container">
+            <div class="row">
+                <form method="POST" th:action="@{'/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
+                    <div class="form-group mb-2 mt-2">
+                    <label for="name">Name: </label>
+                    <input class="form-control"
+                           type="text"
+                           name="name"
+                           id="name"
+                           th:value="${product?.name}">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Category: </label>
+                        <select class="form-control"
+                                name="category">
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat?.name}"
+                                    th:text="${cat?.name}"
+                                    th:selected="${product?.category != null && product?.category.name == cat.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                    <div class="form-group mb-2">
+                    <label for="price">Price: </label>
+                    <input class="form-control"
+                           type="number"
+                           name="price"
+                           id="price"
+                           th:value="${product?.price}">
+                    </div>
+                    <div class="form-group mb-2">
+                    <label for="description">Description: </label>
+                    <textarea class="form-control"
+                              rows="3"
+                              name="description"
+                              id="description"
+                              th:text="${product?.description}"></textarea>
+                    </div>
+                        <label>Size: </label>
+                        <label th:each="size: ${sizes}" class="radio-inline mb-2">
+                            <input class="mx-2" type="radio" name="size" th:value="${size}" th:text="${size}" th:field="${product.size}">
+                        </label>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="image">Image</label>
+                        <img th:if="${product!=null}" th:src="${product?.base64Image}" width="200" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <input name="image" id="image" type="file" accept="image/png, image/jpeg"/>
+                    </div>
 
-                <div class="form-group mb-2">
-                <button class="btn btn-warning">Submit</button>
-                </div>
+                    <div class="form-group mb-2">
+                    <button class="btn btn-warning">Submit</button>
+                    </div>
 
-                <div class="form-group mb-2">
+                    <div class="form-group mb-2">
 
-                    <a id="back" href="/products" type="button" class="btn btn-info">Back to products</a>
-                </div>
-            </form>
+                        <a id="back" href="/products" type="button" class="btn btn-info">Back to products</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
 </th:block>
