@@ -1,49 +1,64 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Product</title>
-</head>
-<body>
-<form method="POST" action="/products" enctype="multipart/form-data" >
-    <!--<label for="image">Image</label>
-    <input name="image" id="image" type="file">-->
-    <div>
-    <label for="name">Name: </label>
-    <input type="text" name="name" id="name">
-    </div>
-    <div>
-    <label>Size: </label>
-    <select name="size">
-        <option th:each="size : ${sizes}"
-                th:value="${size}"
-                th:text="${size}">
-        </option>
-    </select>
-    </div>
-    <div>
-    <label for="price">Price: </label>
-    <input type="number" name="price" id="price">
-    </div>
-    <div>
-    <label>Category </label>
-    <select name="category">
-        <option th:each="cat : ${categories}"
-                th:value="${cat?.name}"
-                th:text="${cat?.name}">
-        </option>
-    </select>
-    </div>
-    <div>
-    <label for="description">Description: </label>
-    <input type="text" name="description" id="description">
-    </div>
-    <div class="form-group">
-        <label for="image">Image</label>
-        <input name="image" id="image" type="file" accept="image/png, image/jpeg"/>
-    </div>
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <div class="container">
+        <div class="row">
+            <form method="POST" th:action="@{'/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
+                <div class="form-group">
+                <label for="name">Name: </label>
+                <input class="form-control"
+                       type="text"
+                       name="name"
+                       id="name"
+                       th:value="${product?.name}">
+                </div>
+                <div class="form-group">
+                    <label>Category </label>
+                    <select class="form-control"
+                            name="category">
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat?.name}"
+                                th:text="${cat?.name}"
+                                th:selected="${product?.category != null && product?.category.name == cat.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                <div class="form-group">
+                <label for="price">Price: </label>
+                <input class="form-control"
+                       type="number"
+                       name="price"
+                       id="price"
+                       th:value="${product?.price}">
+                </div>
+                <div class="form-group">
+                <label for="description">Description: </label>
+                <textarea class="form-control"
+                          rows="3"
+                          name="description"
+                          id="description"
+                          th:text="${product?.description}"></textarea>
+                </div>
+                    <label>Size: </label>
+                    <label th:each="size: ${sizes}" class="radio-inline">
+                        <input type="radio" name="size" th:value="${size}" th:text="${size}" th:field="${product.size}">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <img th:if="${product!=null}" th:src="${product?.base64Image}" width="200" />
+                </div>
+                <div class="form-group">
+                    <input name="image" id="image" type="file" accept="image/png, image/jpeg"/>
+                </div>
 
-    <button>Submit</button>
-</form>
-</body>
-</html>
+                <div class="form-group">
+                <button class="btn btn-warning">Submit</button>
+                </div>
+
+                <div class="form-group">
+                    <a id="back" href="/products" type="button" class="btn btn-info">Back to products</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</th:block>

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping
 public class ProductController {
 
     private final ProductService productService;
@@ -25,57 +25,50 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
-    public String getProductPage(Model model) {
+    @GetMapping({"", "products"})
+    public String getProductsPage(Model model) {
         List<Product> products = this.productService.findAll();
         model.addAttribute("products", products);
-        return "products";
+        model.addAttribute("bodyContent", "products");
+        return "master-details";
     }
 
     @GetMapping("/add-product")
-    public String getNewProductPage(Model model) {
+    public String getAddProductPage(Model model) {
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("sizes", Size.values());
-        return "add-product";
+        model.addAttribute("product", new Product());
+        model.addAttribute("bodyContent", "add-product");
+        return "master-details";
     }
 
-    @PostMapping
-    public String addNewProductPage(
+    @GetMapping("/edit/{id}")
+    public String editProductPage(@PathVariable Long id,
+                                  Model model) {
+        model.addAttribute("product", this.productService.findById(id));
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("sizes", Size.values());
+        model.addAttribute("bodyContent", "add-product");
+        return "master-details";
+    }
+
+    @PostMapping("/product/{id}")
+    public String addNewProduct(@PathVariable Long id,
                                     @RequestParam String name,
                                     @RequestParam Size size,
                                     @RequestParam Float price,
                                     @RequestParam String category,
                                     @RequestParam String description,
                                     @RequestParam MultipartFile image) throws IOException {
-        productService.save(name, size, price, category, description, image);
+        Product product = productService.findById(id);
+        if(product!=null)
+            productService.editProduct(id ,name, size, price, category, description, image);
+        else
+            productService.save(name, size, price, category, description, image);
         return "redirect:/products";
     }
 
-
-
-    @GetMapping("/{id}/edit")
-    public String editProductPage(Model model, @PathVariable Long id) {
-        Product product = this.productService.findById(id);
-        model.addAttribute("categories", this.categoryService.findAll());
-        model.addAttribute("sizes", Size.values());
-        model.addAttribute("product", product);
-        return "edit-product";
-
-    }
-
-    @PostMapping("/{id}")
-    public String addNewProductPage(@PathVariable Long id,
-                                    @RequestParam String name,
-                                    @RequestParam Size size,
-                                    @RequestParam Float price,
-                                    @RequestParam String category,
-                                    @RequestParam String description,
-                                    @RequestParam MultipartFile image) throws IOException {
-        productService.editProduct(id ,name, size, price, category, description, image);
-        return "redirect:/products";
-    }
-
-    @PostMapping("/{id}/delete")
+    @PostMapping("/delete/{id}")
     public String deleteProductWithPost(@PathVariable Long id) {
         try {
             this.productService.deleteById(id);
