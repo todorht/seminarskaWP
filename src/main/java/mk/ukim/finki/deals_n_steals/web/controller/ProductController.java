@@ -7,6 +7,7 @@ import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping({"", "products"})
 public class ProductController {
 
     private final ProductService productService;
@@ -32,7 +33,7 @@ public class ProductController {
         this.authService = authService;
     }
 
-    @GetMapping({"", "products"})
+    @GetMapping
     public String getProductsPage(Model model) {
         List<Product> products = this.productService.findAll();
         model.addAttribute("products", products);
@@ -41,6 +42,7 @@ public class ProductController {
     }
 
     @GetMapping("/add-product")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddProductPage(Model model) {
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("sizes", Size.values());

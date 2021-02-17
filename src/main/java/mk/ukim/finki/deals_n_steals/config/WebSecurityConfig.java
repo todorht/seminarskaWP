@@ -44,13 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .and()
                 .exceptionHandling().accessDeniedPage("/access_denied");
+
     }
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-
+        //In memory H2
 
 //        auth.inMemoryAuthentication()
 //                .withUser("todorht")

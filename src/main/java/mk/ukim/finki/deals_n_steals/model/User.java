@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Transient
     private boolean isEnabled = true;
 
+    @Enumerated(value= EnumType.STRING)
     private Role role;
 
     public User(){}

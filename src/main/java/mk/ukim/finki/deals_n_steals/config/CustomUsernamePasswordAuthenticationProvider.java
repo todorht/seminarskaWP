@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-class CustomUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
+public class CustomUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -23,24 +23,24 @@ class CustomUsernamePasswordAuthenticationProvider implements AuthenticationProv
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        if("".equals(username) || "".equals(password)){
+        if ("".equals(username) || "".equals(password)) {
             throw new BadCredentialsException("Invalid Credentials");
         }
 
         UserDetails userDetails = this.userService.loadUserByUsername(username);
 
-        if(passwordEncoder.matches(passwordEncoder.encode(userDetails.getPassword()),password)){
-            throw new BadCredentialsException("Password is incorrect");
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new BadCredentialsException("Password is incorrect!");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return aClass.equals(UsernamePasswordAuthenticationToken.class); // podrzuva vakov tip najava "UsernamePassword"
+        return aClass.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

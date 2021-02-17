@@ -1,4 +1,4 @@
-<th:block xmlns:th="http://www.thymeleaf.org">
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <div class="container">
         <div class="row">
             <div class="col-12" th:if="${products.size() > 0}">
@@ -32,14 +32,21 @@
                                     <button class="btn btn-primary">Edit</button>
                                 </form>
                             </td>
+                            <td>
+                                <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                <th:block >
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Add product to cart</i></button>
+                                </th:block>
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="row mb-3">
-                <a class="btn btn-block btn-dark add-product-btn" href="/add-product">Add new product</a>
+            <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
+             <a class="btn btn-default" href="/add-product">Add new product</a>
+            </th:block>
         </div>
     </div>
 </th:block>

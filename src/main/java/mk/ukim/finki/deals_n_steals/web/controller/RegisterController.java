@@ -1,9 +1,9 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.config.CustomUsernamePasswordAuthenticationProvider;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.PasswordDoNotMatchException;
-import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RegisterController {
 
     private final UserService userService;
+    private final CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider;
 
-    public RegisterController(UserService userService) {
+    public RegisterController(UserService userService, CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider) {
         this.userService = userService;
 
+        this.customUsernamePasswordAuthenticationProvider = customUsernamePasswordAuthenticationProvider;
     }
 
 

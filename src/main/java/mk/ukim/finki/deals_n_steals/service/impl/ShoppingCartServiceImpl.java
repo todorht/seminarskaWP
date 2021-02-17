@@ -4,6 +4,7 @@ import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.*;
 import mk.ukim.finki.deals_n_steals.repository.jpa.ProductRepository;
 import mk.ukim.finki.deals_n_steals.repository.jpa.ShoppingCartRepository;
@@ -29,7 +30,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart findActiveShoppingCartByUsername(String username) {
-        return this.shoppingCartRepository.findByUserUsernameAndStatus(username, CartStatus.CREATED)
+        User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
+
+        return this.shoppingCartRepository.findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED)
                 .orElseThrow(()->new ShoppingCartIsNotActiveException(username));
     }
 
@@ -44,7 +47,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(()->new UserNotFoundException(username));
 
         return this.shoppingCartRepository
-                .findByUserUsernameAndStatus(username,CartStatus.CREATED)
+                .findAll()
+                .stream()
+                .filter(sc -> sc.getUser().getUsername().equals(username) && sc.getStatus().toString().equals(CartStatus.CREATED.toString()))
+                .findFirst()
                 .orElseGet(()->{
                     ShoppingCart newShoppingCart = new ShoppingCart(user);
                     user.getShoppingCartList().add(newShoppingCart);
@@ -57,7 +63,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart createNewShoppingCart(String username) {
         User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
 
-        if (this.shoppingCartRepository.existsByUserUsernameAndStatus(username, CartStatus.CREATED))
+        if (!this.shoppingCartRepository.findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED).isPresent())
             throw new ShoppingCartIsAlreadyCreated(username);
 
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -90,8 +96,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart cancelActiveShoppingCart(String username) {
+        User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
+
         ShoppingCart shoppingCart = this.shoppingCartRepository
-                .findByUserUsernameAndStatus(username, CartStatus.CREATED)
+                .findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED)
                 .orElseThrow(() -> new ShoppingCartIsNotActiveException(username));
         shoppingCart.setStatus(CartStatus.CANCELED);
         return this.shoppingCartRepository.save(shoppingCart);
