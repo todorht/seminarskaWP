@@ -1,14 +1,17 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
-@RequestMapping("/shopping-carts")
+@RequestMapping("/shopping-cart")
 public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
@@ -18,22 +21,23 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
     }
-    //TODO: maping za shopping-carts, da otvori samo koshnichka bez ID-inja
 
-    @PostMapping("/{productId}/add-product")
-    public String addProductToShoppingCart(@PathVariable Long productId) {
-        try {
-           this.shoppingCartService.addProductToShoppingCart(this.authService.getCurrentUserId(), productId);
-        } catch (RuntimeException ex) {
-            return "redirect:/products?error=" + ex.getLocalizedMessage();
-        }
-        return "redirect:/products";
+    @GetMapping
+    public String getShoppingCartPage(HttpServletRequest request,Model model){
+
+
+        String username = (String) request.getSession().getAttribute("username");
+
+        ShoppingCart shoppingCart = this.shoppingCartService.findActiveShoppingCartByUsername(username);
+        model.addAttribute("products", shoppingCart.getProducts());
+        model.addAttribute("bodyContent","shopping-cart");
+        return "master-details";
     }
 
-
     @PostMapping("/{productId}/remove-product")
-    public String removeProductToShoppingCart(@PathVariable Long productId) {
-        this.shoppingCartService.removeProductFromShoppingCart(this.authService.getCurrentUserId(), productId);
+    public String removeProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
+        String username = (String) request.getSession().getAttribute("username");
+        this.shoppingCartService.removeProductFromShoppingCart(username, productId);
         return "redirect:/products";
     }
 }

@@ -39,6 +39,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public ShoppingCart getActiveShoppingCart(String username) {
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(()->new UserNotFoundException(username));
+
+        return this.shoppingCartRepository
+                .findByUserUsernameAndStatus(username,CartStatus.CREATED)
+                .orElseGet(()->{
+                    ShoppingCart newShoppingCart = new ShoppingCart(user);
+                    user.getShoppingCartList().add(newShoppingCart);
+                    return this.shoppingCartRepository.save(newShoppingCart);
+                });
+
+    }
+
+    @Override
     public ShoppingCart createNewShoppingCart(String username) {
         User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
 
@@ -47,18 +62,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
+        user.getShoppingCartList().add(shoppingCart);
         return this.shoppingCartRepository.save(shoppingCart);
     }
 
     @Override
     public ShoppingCart addProductToShoppingCart(String username, Long productId) {
-        if (!this.shoppingCartRepository.existsByUserUsernameAndStatus(username, CartStatus.CREATED))
-            throw new ShoppingCartNotFoundException(username);
-        Product product = this.productRepository.findById(productId).orElseThrow(()->new ProductNotFoundException(productId));
-        ShoppingCart shoppingCart = this.findActiveShoppingCartByUsername(username);
-        if(shoppingCart.getProducts().stream().noneMatch(p ->p.getId()==productId)){
-            shoppingCart.getProducts().add(product);
-        }else throw new ProductAlreadyInShoppingCart(product.getId(), username);
+        ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
+
+        Product product = this.productRepository.findById(productId)
+                .orElseThrow(()->new ProductNotFoundException(productId));
+
+        if(shoppingCart.getProducts().stream().anyMatch(p -> p.getId()==productId))
+            throw new ProductAlreadyInShoppingCart(productId,username);
+        shoppingCart.getProducts().add(product);
         return this.shoppingCartRepository.save(shoppingCart);
     }
 

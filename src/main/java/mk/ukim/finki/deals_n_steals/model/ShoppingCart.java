@@ -30,7 +30,7 @@ public class ShoppingCart{
     private double cost;
 
 
-    public ShoppingCart() {}
+    public ShoppingCart(){}
 
     public ShoppingCart(User user) {
         this.dateCreate = LocalDateTime.now();

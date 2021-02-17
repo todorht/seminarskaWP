@@ -9,6 +9,8 @@ public interface ShoppingCartService {
 
     List<ShoppingCart> findAllByUsername(String userId);
 
+    ShoppingCart getActiveShoppingCart(String username);
+
     ShoppingCart createNewShoppingCart(String userId);
 
     ShoppingCart addProductToShoppingCart(String userId,

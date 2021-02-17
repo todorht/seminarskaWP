@@ -2,12 +2,14 @@ package mk.ukim.finki.deals_n_steals.model;
 
 import lombok.Data;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
+import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +23,9 @@ public class User implements UserDetails {
     private String name;
     private String surname;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<ShoppingCart> shoppingCartList;
+
     @Transient
     private boolean isAccountNonExpired = true;
     @Transient
@@ -32,15 +37,15 @@ public class User implements UserDetails {
 
     private Role role;
 
-    public User () {}
+    public User(){}
 
-    public User(String username, String password,
-                String name, String surname, Role role) {
+    public User(String username, String password, String name, String surname, Role role) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.role = role;
+
     }
 
     @Override

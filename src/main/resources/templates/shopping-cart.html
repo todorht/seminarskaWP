@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+</head>
+<body>
+<div class="col-12" th:if="${products.size() > 0}">
+<table>
+    <thead>
+    <th>Name</th>
+    <th>Size</th>
+    <th>Price</th>
+    <th>Category</th>
+    <th>Description</th>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.name}">product name</td>
+        <td th:text="${product.size}">product size</td>
+        <td th:text="${product.price}">product price</td>
+        <td th:text="${product.category?.name}">product category</td>
+        <td th:text="${product.description}">product description</td>
+        <td><img th:src="${product.base64Image}"/></td>
+        <td>
+            <form method="POST" th:action="@{'products/{id}/delete' (id=${product.id})}">
+                <button>Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

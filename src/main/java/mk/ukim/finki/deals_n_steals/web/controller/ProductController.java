@@ -3,13 +3,16 @@ package mk.ukim.finki.deals_n_steals.web.controller;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
+import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
+import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,10 +22,14 @@ public class ProductController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final ShoppingCartService shoppingCartService;
+    private final AuthService authService;
 
-    public ProductController(ProductService productService, CategoryService categoryService) {
+    public ProductController(ProductService productService, CategoryService categoryService, ShoppingCartService shoppingCartService, AuthService authService) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.shoppingCartService = shoppingCartService;
+        this.authService = authService;
     }
 
     @GetMapping({"", "products"})
@@ -66,6 +73,15 @@ public class ProductController {
         else
             productService.save(name, size, price, category, description, image);
         return "redirect:/products";
+    }
+
+    @PostMapping("/{productId}")
+    public String addProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
+        String username = (String) request.getSession().getAttribute("username");
+        if(username!=null) {
+            this.shoppingCartService.addProductToShoppingCart(username, productId);
+            return "redirect:/shopping-cart";
+        }else return "redirect:/products?error=You need to log in";
     }
 
     @PostMapping("/delete/{id}")
