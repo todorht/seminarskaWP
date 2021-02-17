@@ -1,23 +1,15 @@
 package mk.ukim.finki.deals_n_steals.service;
 
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 
 import java.util.List;
 
 public interface ShoppingCartService {
-    ShoppingCart findActiveShoppingCartByUsername(String userId);
+   List<ShoppingCart> findAll();
+   List<ShoppingCart> findByUsername(String username);
+   ShoppingCart addProductToShoppingCart(String username, Long id);
+   ShoppingCart findByUsernameAndStatus(String username, CartStatus status);
+   ShoppingCart save(ShoppingCart shoppingCart);
 
-    List<ShoppingCart> findAllByUsername(String userId);
-
-    ShoppingCart getActiveShoppingCart(String username);
-
-    ShoppingCart createNewShoppingCart(String userId);
-
-    ShoppingCart addProductToShoppingCart(String userId,
-                                          Long productId);
-
-    ShoppingCart removeProductFromShoppingCart(String userId,
-                                               Long productId);
-
-    ShoppingCart cancelActiveShoppingCart(String userId);
 }

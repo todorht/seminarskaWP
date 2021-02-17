@@ -1,6 +1,7 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
@@ -28,11 +29,10 @@ public class ShoppingCartController {
     @GetMapping
     public String getShoppingCartPage(Model model){
         String username = this.authService.getCurrentUserId();
-
-        ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(username);
+        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(username,CartStatus.CREATED);
         model.addAttribute("products", shoppingCart.getProducts());
         model.addAttribute("bodyContent","shopping-cart");
-        return "master-details";
+        return "shopping-cart";
     }
 
     @PostMapping("/add-product/{id}")
@@ -40,18 +40,19 @@ public class ShoppingCartController {
         try {
             String username = this.authService.getCurrentUserId();
 
-            ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(username);
+            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(username, CartStatus.CREATED);
             shoppingCart.getProducts().add(this.productService.findById(id));
+            this.shoppingCartService.save(shoppingCart);
             return "redirect:/shopping-cart";
         }catch (RuntimeException exception){
             return "redirect:/shopping-cart?error=ADD-SC";
         }
     }
 
-    @PostMapping("/{productId}/remove-product")
-    public String removeProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
-        String username = (String) request.getSession().getAttribute("username");
-        this.shoppingCartService.removeProductFromShoppingCart(username, productId);
-        return "redirect:/products";
-    }
+//    @PostMapping("/{productId}/remove-product")
+//    public String removeProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
+//        String username = (String) request.getSession().getAttribute("username");
+//        this.shoppingCartService.removeProductFromShoppingCart(username, productId);
+//        return "redirect:/products";
+//    }
 }

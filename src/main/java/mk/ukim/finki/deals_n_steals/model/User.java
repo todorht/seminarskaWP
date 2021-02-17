@@ -23,9 +23,6 @@ public class User implements UserDetails {
     private String name;
     private String surname;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<ShoppingCart> shoppingCartList;
-
     @Transient
     private boolean isAccountNonExpired = true;
     @Transient

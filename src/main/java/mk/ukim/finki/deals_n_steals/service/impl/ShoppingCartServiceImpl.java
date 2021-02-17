@@ -13,6 +13,7 @@ import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -27,81 +28,61 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.userRepository = userRepository;
     }
 
-
     @Override
-    public ShoppingCart findActiveShoppingCartByUsername(String username) {
-        User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
-
-        return this.shoppingCartRepository.findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED)
-                .orElseThrow(()->new ShoppingCartIsNotActiveException(username));
+    public List<ShoppingCart> findAll() {
+        return this.shoppingCartRepository.findAll();
     }
 
     @Override
-    public List<ShoppingCart> findAllByUsername(String username) {
-        return this.shoppingCartRepository.findAllByUserUsername(username);
-    }
-
-    @Override
-    public ShoppingCart getActiveShoppingCart(String username) {
+    public List<ShoppingCart> findByUsername(String username) {
         User user = this.userRepository.findByUsername(username)
                 .orElseThrow(()->new UserNotFoundException(username));
 
-        return this.shoppingCartRepository
-                .findAll()
+
+        return this.shoppingCartRepository.findAll()
                 .stream()
-                .filter(sc -> sc.getUser().getUsername().equals(username) && sc.getStatus().toString().equals(CartStatus.CREATED.toString()))
-                .findFirst()
-                .orElseGet(()->{
-                    ShoppingCart newShoppingCart = new ShoppingCart(user);
-                    user.getShoppingCartList().add(newShoppingCart);
+                .filter(shoppingCart -> shoppingCart.getUsername()
+                        .equalsIgnoreCase(username))
+                .collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public ShoppingCart addProductToShoppingCart(String username, Long id) {
+
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(()->new UserNotFoundException(username));
+
+        Product product = this.productRepository.findById(id)
+                .orElseThrow(()-> new ProductNotFoundException(id));
+
+        ShoppingCart shoppingCart = this.findByUsername(username).stream()
+                .filter(shoppingCart1->shoppingCart1.getStatus()==CartStatus.CREATED)
+                .findFirst().orElseGet(()-> {
+                            ShoppingCart newShoppingCart = new ShoppingCart(user.getUsername());
+                            return this.shoppingCartRepository.save(newShoppingCart);
+                        });
+        shoppingCart.getProducts().add(product);
+        return shoppingCart;
+    }
+
+    @Override
+    public ShoppingCart findByUsernameAndStatus(String username, CartStatus status) {
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(()->new UserNotFoundException(username));
+
+        return this.findByUsername(username)
+                .stream()
+                .filter(shoppingCart -> shoppingCart.getStatus()
+                        .equals(CartStatus.CREATED)).findFirst().orElseGet(()-> {
+                    ShoppingCart newShoppingCart = new ShoppingCart(user.getUsername());
                     return this.shoppingCartRepository.save(newShoppingCart);
                 });
-
     }
 
     @Override
-    public ShoppingCart createNewShoppingCart(String username) {
-        User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
-
-        if (!this.shoppingCartRepository.findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED).isPresent())
-            throw new ShoppingCartIsAlreadyCreated(username);
-
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        user.getShoppingCartList().add(shoppingCart);
-        return this.shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Override
-    public ShoppingCart addProductToShoppingCart(String username, Long productId) {
-        ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
-
-        Product product = this.productRepository.findById(productId)
-                .orElseThrow(()->new ProductNotFoundException(productId));
-
-        if(shoppingCart.getProducts().stream().anyMatch(p -> p.getId()==productId))
-            throw new ProductAlreadyInShoppingCart(productId,username);
-        shoppingCart.getProducts().add(product);
-        return this.shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Override
-    public ShoppingCart removeProductFromShoppingCart(String username, Long productId) {
-        if (!this.shoppingCartRepository.existsByUserUsernameAndStatus(username, CartStatus.CREATED))
-            throw new ShoppingCartNotFoundException(username);
-        ShoppingCart shoppingCart = this.findActiveShoppingCartByUsername(username);
-        shoppingCart.getProducts().removeIf(p->p.getId()==productId);
-        return this.shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Override
-    public ShoppingCart cancelActiveShoppingCart(String username) {
-        User user = this.userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
-
-        ShoppingCart shoppingCart = this.shoppingCartRepository
-                .findByUserContainingAndStatus(user.getUsername(), CartStatus.CREATED)
-                .orElseThrow(() -> new ShoppingCartIsNotActiveException(username));
-        shoppingCart.setStatus(CartStatus.CANCELED);
+    public ShoppingCart save(ShoppingCart shoppingCart) {
         return this.shoppingCartRepository.save(shoppingCart);
     }
 }

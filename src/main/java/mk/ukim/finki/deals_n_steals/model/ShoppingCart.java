@@ -18,10 +18,9 @@ public class ShoppingCart{
 
     private LocalDateTime dateCreate;
 
-    @ManyToOne
-    private User user;
+    private String username;
 
-    @ManyToMany
+    @OneToMany
     private List<Product> products;
 
     @Enumerated(EnumType.STRING)
@@ -32,9 +31,9 @@ public class ShoppingCart{
 
     public ShoppingCart(){}
 
-    public ShoppingCart(User user) {
+    public ShoppingCart(String username) {
         this.dateCreate = LocalDateTime.now();
-        this.user = user;
+        this.username = username;
         this.status = CartStatus.CREATED;
         this.products = new ArrayList<>();
     }
