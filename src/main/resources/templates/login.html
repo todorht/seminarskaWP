@@ -1,19 +1,25 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
-    <form method="POST" th:action="@{/login}">
-<div>
-    <label for="username">Username:</label>
-    <input type="text"
-           name="username"
-           id="username">
-</div>
-<div>
-    <label for="password">Password:</label>
-    <input type="text"
-           name="password"
-           id="password">
-</div>
-
-
-        <button>Log in</button>
-    </form>
+    <div class="container">
+        <div class="row">
+            <form method="POST" th:action="@{/login}">
+                <div class="form-group mb-2 mt-5">
+                    <label for="username">Username:</label>
+                    <input class="form-control"
+                           type="text"
+                           name="username"
+                           id="username" />
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password">Password:</label>
+                    <input class="form-control"
+                           type="text"
+                           name="password"
+                           id="password" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-dark">Log in</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </th:block>

@@ -24,8 +24,9 @@ public class LoginController {
     }
 
     @GetMapping
-    public String getLoginPage() {
-        return "login";
+    public String getLoginPage(Model model) {
+        model.addAttribute("bodyContent", "login");
+        return "master-details";
     }
 
     @PostMapping
