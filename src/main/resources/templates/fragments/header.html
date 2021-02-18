@@ -1,4 +1,4 @@
-<header>
+<header xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Deals'N'Steals</a>
@@ -27,8 +27,11 @@
                         Cart
                     </button>
                 </form>
-                <div class="d-flex">
-                    <a href="/login" class="btn btn-outline-success" type="submit">Login</a>
+                <div class="d-flex" sec:authorize="!isAuthenticated()">
+                    <a href="/login" class="btn btn-outline-warning" type="submit">Login</a>
+                </div>
+                <div class="d-flex" sec:authorize="isAuthenticated()">
+                    <a href="/logout" class="btn btn-outline-warning" type="submit">Logout</a>
                 </div>
             </div>
         </div>

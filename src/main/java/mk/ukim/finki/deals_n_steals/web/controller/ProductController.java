@@ -3,11 +3,7 @@ package mk.ukim.finki.deals_n_steals.web.controller;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
-import mk.ukim.finki.deals_n_steals.service.AuthService;
-import mk.ukim.finki.deals_n_steals.service.CategoryService;
-import mk.ukim.finki.deals_n_steals.service.ProductService;
-import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
-import org.springframework.security.access.prepost.PreAuthorize;
+import mk.ukim.finki.deals_n_steals.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -26,12 +21,14 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
+    private final EmailService emailService;
 
-    public ProductController(ProductService productService, CategoryService categoryService, ShoppingCartService shoppingCartService, AuthService authService) {
+    public ProductController(ProductService productService, CategoryService categoryService, ShoppingCartService shoppingCartService, AuthService authService, EmailService emailService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -75,6 +72,7 @@ public class ProductController {
             productService.editProduct(id, name, size, price, category, description, image);
         else
             productService.save(name, size, price, category, description, image);
+        emailService.notifyAllEmails();
         return "redirect:/products";
     }
 

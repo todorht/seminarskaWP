@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         product.setDescription(description);
         String base64Image;
-        if(image.isEmpty()){
+        if(!image.isEmpty()){
             byte[] bytes = image.getBytes();
             base64Image = String.format("data:%s;base64,%s", image.getContentType(), Base64.getEncoder().encodeToString(bytes));
         }
