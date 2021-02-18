@@ -26,6 +26,8 @@ public class Product {
     @NotNull
     private Size size;
 
+    private boolean stock;
+
     @NotNull
     private Float price;
 
@@ -44,6 +46,7 @@ public class Product {
         this.price = price;
         this.category = category;
         this.description = description;
+        this.stock=true;
     }
 
     public Product(String name, Size size, Float price, Category category, String description, String base64Image){
@@ -53,6 +56,7 @@ public class Product {
         this.category = category;
         this.description = description;
         this.base64Image = base64Image;
+        this.stock=true;
     }
 
 
