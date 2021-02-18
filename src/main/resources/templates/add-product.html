@@ -2,7 +2,7 @@
     <main class="flex-shrink-0">
         <div class="container">
             <div class="row">
-                <form method="POST" th:action="@{'/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
+                <form method="POST" th:action="@{'/products/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
                     <div class="form-group mb-2 mt-2">
                         <label for="name">Name: </label>
                         <input class="form-control"

@@ -50,7 +50,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart addProductToShoppingCart(String username, Long id) {
-
         User user = this.userRepository.findByUsername(username)
                 .orElseThrow(()->new UserNotFoundException(username));
 
@@ -63,8 +62,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                             ShoppingCart newShoppingCart = new ShoppingCart(user.getUsername());
                             return this.shoppingCartRepository.save(newShoppingCart);
                         });
+
+        if(product.isStock()) {
+            product.setStock(false);
+            this.productRepository.save(product);
+        }else throw new ProductIsAlreadyInShoppingCartException(product.getName());
+
         shoppingCart.getProducts().add(product);
-        return shoppingCart;
+        return this.shoppingCartRepository.save(shoppingCart);
     }
 
     @Override

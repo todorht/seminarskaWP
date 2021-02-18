@@ -4,6 +4,7 @@ import mk.ukim.finki.deals_n_steals.config.CustomUsernamePasswordAuthenticationP
 import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.PasswordDoNotMatchException;
+import mk.ukim.finki.deals_n_steals.model.exception.UserNameExistsException;
 import mk.ukim.finki.deals_n_steals.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class RegisterController {
                            @RequestParam Role role){
         try {
             this.userService.register(username, password, name, surname, role);
-        }catch (PasswordDoNotMatchException | InvalidArgumentsException exception){
+        }catch (PasswordDoNotMatchException | InvalidArgumentsException | UserNameExistsException exception){
             return "redirect:/register?error=" + exception.getMessage();
         }
         return "redirect:/login";

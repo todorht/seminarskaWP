@@ -11,10 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping({"", "products"})
+@RequestMapping({ "products"})
 public class ProductController {
 
     private final ProductService productService;
@@ -32,9 +35,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProductsPage(Model model) {
+    public String getProductsPage(@RequestParam(required = false) String error, Model model) {
         List<Product> products = this.productService.findAll();
-        model.addAttribute("products", products);
+        if(error!=null){
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
+        model.addAttribute("products", products.stream().filter(Product::isStock).collect(Collectors.toList()));
         model.addAttribute("bodyContent", "products");
         return "master-details";
     }
@@ -75,15 +82,19 @@ public class ProductController {
         emailService.notifyAllEmails();
         return "redirect:/products";
     }
-
-    @PostMapping("/{productId}")
-    public String addProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
-        String username = (String) request.getSession().getAttribute("username");
-        if(username!=null) {
-            this.shoppingCartService.addProductToShoppingCart(username, productId);
-            return "redirect:/shopping-cart";
-        }else return "redirect:/products?error=You need to log in";
-    }
+//
+//    @PostMapping("/{productId}")
+//    public String addProductToShoppingCart(HttpServletRequest request, @PathVariable Long productId) {
+//        String username = (String) request.getSession().getAttribute("username");
+//        try {
+//            this.shoppingCartService.addProductToShoppingCart(username, productId);
+//            return "redirect:/shopping-cart";
+//        }catch (ProductIsAlreadyInShoppingCartException ex){
+//            return "redirect:/products?error=" + ex.getMessage();
+//        }
+//
+//
+//    }
 
     @PostMapping("/delete/{id}")
     public String deleteProductWithPost(@PathVariable Long id) {

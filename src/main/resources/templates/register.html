@@ -27,6 +27,9 @@
                         <input  name="role"  type="radio" id="ROLE_USER" value="ROLE_USER">
                     </label>
                 </div>
+                <div th:if="${param.error}">
+                    <h2 class="text-center text-danger" th:text="${param.error}"></h2>
+                </div>
                 <div class="form-group mb-3 justify-content-center">
                     <button class="btn btn-block btn-dark" type="submit">Sign up</button>
                 </div>

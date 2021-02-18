@@ -1,6 +1,9 @@
 <th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <div class="container">
         <div class="row">
+            <div th:if="${hasError}">
+                <h5 class="text-center text-danger" th:text="${error}"></h5>
+            </div>
             <div class="col-12" th:if="${products.size() > 0}">
                 <div class="table-responsive">
                     <table class="table table-hover table-striped table-dark">
@@ -35,17 +38,16 @@
                             <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                                 <td>
 
-                                    <form method="GET" th:action="@{'/edit/{id}' (id=${product.id})}">
+                                    <form method="GET" th:action="@{'/products/edit/{id}' (id=${product.id})}">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </form>
 
                                 </td>
                                 <td>
 
-                                    <form method="POST" th:action="@{'/delete/{id}' (id=${product.id})}">
+                                    <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
                                         <button class="btn btn-sm btn-danger">Delete</button>
                                     </form>
-
                                 </td>
                             </th:block>
                         </tr>
@@ -54,7 +56,7 @@
                 </div>
             </div>
             <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-                <a class="btn btn-block btn-dark add-product-btn" href="/add-product">Add new product</a>
+                <a class="btn btn-block btn-dark add-product-btn" href="/products/add-product">Add new product</a>
             </th:block>
         </div>
     </div>

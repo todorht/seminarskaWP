@@ -4,6 +4,8 @@ import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
+import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
@@ -36,7 +38,8 @@ public class ShoppingCartController {
 
     @GetMapping
     public String getShoppingCartPage(Model model){
-        String username = this.authService.getCurrentUserId();
+        if(this.authService.getCurrentUser()==null) return "redirect:/products?error=" + "pls lof in"
+;        String username = this.authService.getCurrentUserId();
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(username,CartStatus.CREATED);
         model.addAttribute("shopping-cart-id", shoppingCart.getId());
@@ -48,24 +51,20 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/add-product/{id}")
-    public String addProductToShoppingCart(@PathVariable Long id, Model model){
+    public String addProductToShoppingCart(@PathVariable Long id) {
+        String username = this.authService.getCurrentUserId();
         try {
-            String username = this.authService.getCurrentUserId();
-
-            ShoppingCart shoppingCart = this.shoppingCartService
-                    .findByUsernameAndStatus(username, CartStatus.CREATED);
-            model.addAttribute("shopping-cart-id", shoppingCart.getId());
-            shoppingCart.getProducts().add(this.productService.findById(id));
-
-            this.shoppingCartService.save(shoppingCart);
+            this.shoppingCartService.addProductToShoppingCart(username, id);
             return "redirect:/shopping-cart";
-        }catch (RuntimeException exception){
-            return "redirect:/shopping-cart?error=ADD-SC";
+        }catch (ProductIsAlreadyInShoppingCartException ex){
+            return "redirect:/products?error=" + ex.getMessage();
         }
-    }
 
+
+    }
     @PostMapping("/{id}/remove-product")
     public String removeProductToShoppingCart(@PathVariable Long id) {
+
         String username = this.authService.getCurrentUserId();
 
         ShoppingCart shoppingCart = this.shoppingCartService
@@ -94,7 +93,20 @@ public class ShoppingCartController {
         ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED);
         shoppingCart.setStatus(CartStatus.FINISH);
         Order order = new Order(this.authService.getCurrentUserId(),shoppingCart);
+        order.setOrderStatus(OrderStatus.SUCCESS);
         this.orderService.save(order);
         return "redirect:/products";
+    }
+
+    @GetMapping("/list-orders")
+    public String returnOrders(Model model){
+        List<Order> orders = this.orderService.findByUsername(this.authService.getCurrentUserId());
+        if(orders.size()<=0){
+            return "redirect:/shopping-cart";
+        }
+        model.addAttribute("username",this.authService.getCurrentUserId());
+        model.addAttribute("orders",orders);
+        model.addAttribute("bodyContent","order-list");
+        return "master-details";
     }
 }

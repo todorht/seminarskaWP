@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -29,5 +30,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order save(Order order) {
         return this.orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findByUsername(String username) {
+        return this.orderRepository.findAll()
+                .stream()
+                .filter(order -> order.getUsername().equals(username))
+                .collect(Collectors.toList());
     }
 }
