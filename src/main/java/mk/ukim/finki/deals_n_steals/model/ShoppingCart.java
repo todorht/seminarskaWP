@@ -35,5 +35,6 @@ public class ShoppingCart{
         this.username = username;
         this.status = CartStatus.CREATED;
         this.products = new ArrayList<>();
+        this.cost = 0;
     }
 }

@@ -48,6 +48,7 @@
                             </td>
                         </tr>
                         <tr>
+                            <td th:text="${shoppingcart.cost}">total price</td>
                             <td>
                                 <form method="POST" th:action="@{/shopping-cart/submit-order}">
                                 <button>Submit order</button>

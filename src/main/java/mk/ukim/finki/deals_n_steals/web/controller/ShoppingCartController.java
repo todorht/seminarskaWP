@@ -38,11 +38,13 @@ public class ShoppingCartController {
 
     @GetMapping
     public String getShoppingCartPage(Model model){
-        if(this.authService.getCurrentUser()==null) return "redirect:/products?error=" + "pls lof in"
-;        String username = this.authService.getCurrentUserId();
+        if(this.authService.getCurrentUser()==null) return "redirect:/products?error=";
+        String username = this.authService.getCurrentUserId();
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(username,CartStatus.CREATED);
-        model.addAttribute("shopping-cart-id", shoppingCart.getId());
+        shoppingCart.setCost((double) shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum());
+        this.shoppingCartService.save(shoppingCart);
+        model.addAttribute("shoppingcart", shoppingCart);
         List<Product> products = shoppingCart.getProducts();
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("products", products);
