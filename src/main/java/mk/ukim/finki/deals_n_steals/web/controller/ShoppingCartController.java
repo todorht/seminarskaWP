@@ -33,6 +33,7 @@ public class ShoppingCartController {
         String username = this.authService.getCurrentUserId();
         ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(username,CartStatus.CREATED);
         List<Product> products = shoppingCart.getProducts();
+        model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("products", products);
         model.addAttribute("bodyContent","shopping-cart");
         return "master-details";

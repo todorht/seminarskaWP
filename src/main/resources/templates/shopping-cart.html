@@ -2,7 +2,7 @@
     <section class="jumbotron text-center">
         <div class="container">
             <h3 class="jumbotron-heading">Shopping cart for
-                <th:block th:if="${session.user!=null}" th:text="${session.user.getUsername()}"></th:block>
+                <th:block th:if="${username}" th:text="${username}"></th:block>
             </h3>
         </div>
     </section>

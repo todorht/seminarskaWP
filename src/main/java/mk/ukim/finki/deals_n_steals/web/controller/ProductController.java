@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/add-product")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddProductPage(Model model) {
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("sizes", Size.values());

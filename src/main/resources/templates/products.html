@@ -12,8 +12,10 @@
                             <th>Category</th>
                             <th>Description</th>
                             <th></th>
+                            <<th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                             <th></th>
                             <th></th>
+                            </th:block>
                         </thead>
                         <tbody>
                             <tr th:each="product : ${products}">
@@ -30,16 +32,22 @@
                                         </th:block>
                                     </form>
                                 </td>
+                                <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                                 <td>
+
                                     <form method="GET" th:action="@{'/edit/{id}' (id=${product.id})}">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </form>
+
                                 </td>
                                 <td>
+
                                     <form method="POST" th:action="@{'/delete/{id}' (id=${product.id})}">
                                         <button class="btn btn-sm btn-danger">Delete</button>
                                     </form>
+
                                 </td>
+                                </th:block>
                             </tr>
                         </tbody>
                     </table>
