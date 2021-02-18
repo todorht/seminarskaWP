@@ -28,7 +28,6 @@ public class ShoppingCart{
 
     private double cost;
 
-
     public ShoppingCart(){}
 
     public ShoppingCart(String username) {

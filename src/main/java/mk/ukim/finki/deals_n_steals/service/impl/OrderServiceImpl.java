@@ -27,14 +27,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order createOrder(String username) {
-        Order order = new Order(username,new ArrayList<>());
-        order.setProductList(this.shoppingCartRepository.findFirstByUsername(username).getProducts());
+    public Order save(Order order) {
         return this.orderRepository.save(order);
-    }
-
-    @Override
-    public List<Order> findAllByUsername(String username) {
-        return this.orderRepository.findAllByUsername(username);
     }
 }

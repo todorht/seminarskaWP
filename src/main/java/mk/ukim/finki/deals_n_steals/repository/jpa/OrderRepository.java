@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Long, Order> {
-    Order save(Order order);
-    List<Order> findAllByUsername(String username);
-
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

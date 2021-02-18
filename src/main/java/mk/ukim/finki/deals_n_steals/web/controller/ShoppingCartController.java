@@ -1,5 +1,6 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
@@ -90,7 +91,10 @@ public class ShoppingCartController {
 
     @PostMapping("/submit-order")
     public String submitOrder(){
-        this.orderService.createOrder(this.authService.getCurrentUserId());
+        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED);
+        shoppingCart.setStatus(CartStatus.FINISH);
+        Order order = new Order(this.authService.getCurrentUserId(),shoppingCart);
+        this.orderService.save(order);
         return "redirect:/products";
     }
 }

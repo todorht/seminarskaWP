@@ -2,12 +2,11 @@ package mk.ukim.finki.deals_n_steals.model;
 
 
 import lombok.Data;
-import lombok.Generated;
+
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity
+@Entity(name = "orders")
 @Data
 public class Order {
 
@@ -17,15 +16,15 @@ public class Order {
 
     private String username;
 
-    @OneToMany
-    private List<Product> productList;
-
     private double total;
 
-    public Order(String username, List<Product> products){
+    @OneToOne
+    private ShoppingCart shoppingCart;
+
+    public Order(String username, ShoppingCart shoppingCart){
         this.username = username;
-        this.productList = products;
-        this.total = products.stream().mapToDouble(Product::getPrice).sum();
+        this.shoppingCart = shoppingCart;
+        this.total = this.shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum();
     }
 
     public Order() {
