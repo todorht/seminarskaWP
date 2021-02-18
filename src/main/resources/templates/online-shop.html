@@ -1,0 +1,10 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <li th:each="month:${perMonth}">
+        <p th:text="${month}"></p>
+    </li>
+
+    <div class="container">
+       <p th:text="${total}"></p>
+    </div>
+</th:block>

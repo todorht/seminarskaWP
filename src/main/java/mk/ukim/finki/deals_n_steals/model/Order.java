@@ -6,6 +6,7 @@ import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name = "orders")
 @Data
@@ -19,6 +20,8 @@ public class Order {
 
     private double total;
 
+    private LocalDateTime createTime;
+
     @OneToOne
     private ShoppingCart shoppingCart;
 
@@ -29,10 +32,11 @@ public class Order {
         this.username = username;
         this.shoppingCart = shoppingCart;
         this.total = this.shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum();
-
+        this.createTime = LocalDateTime.now();
     }
 
     public Order() {
-
+        this.createTime = LocalDateTime.now();
+        this.total = 0;
     }
 }
