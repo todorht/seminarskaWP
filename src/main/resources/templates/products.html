@@ -3,36 +3,36 @@
         <div class="row">
             <div class="col-12" th:if="${products.size() > 0}">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover table-striped table-dark">
                         <thead>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Description</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th></th>
+                        <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                             <th></th>
-                            <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                             <th></th>
-                            <th></th>
-                            </th:block>
+                        </th:block>
                         </thead>
                         <tbody>
-                            <tr th:each="product : ${products}">
-                                <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
-                                <td th:text="${product.name}">product name</td>
-                                <td th:text="${product.size}">product size</td>
-                                <td th:text="'$'+${product.price}">product price</td>
-                                <td th:text="${product.category?.name}">product category</td>
-                                <td th:text="${product.description}">product description</td>
-                                <td>
-                                    <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
-                                        <th:block >
-                                            <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
-                                        </th:block>
-                                    </form>
-                                </td>
-                                <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
+                        <tr th:each="product : ${products}">
+                            <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
+                            <td th:text="${product.name}">product name</td>
+                            <td th:text="${product.size}">product size</td>
+                            <td th:text="'$'+${product.price}">product price</td>
+                            <td th:text="${product.category?.name}">product category</td>
+                            <td th:text="${product.description}">product description</td>
+                            <td>
+                                <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                    <th:block >
+                                        <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                                    </th:block>
+                                </form>
+                            </td>
+                            <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                                 <td>
 
                                     <form method="GET" th:action="@{'/edit/{id}' (id=${product.id})}">
@@ -47,14 +47,14 @@
                                     </form>
 
                                 </td>
-                                </th:block>
-                            </tr>
+                            </th:block>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-             <a class="btn btn-block btn-dark add-product-btn" href="/add-product">Add new product</a>
+                <a class="btn btn-block btn-dark add-product-btn" href="/add-product">Add new product</a>
             </th:block>
         </div>
     </div>

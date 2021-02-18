@@ -1,0 +1,38 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<div class="container ">
+    <div class="row justify-content-center ">
+        <div class="col-5 " th:if="${categories.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-dark">
+                    <thead >
+                    <th >Category Name</th><th></th>
+                    <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
+                    </th:block>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category : ${categories}">
+                        <td class="" th:text="${category.name}">Category Name</td>
+                        <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
+                            <td>
+                                <form method="POST" th:action="@{'/categories/delete/{name}' (name=${category.name})}">
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </th:block>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    </div>
+</div>
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-5 justify-content-center">
+        <th:block  sec:authorize="${hasRole('ROLE_ADMIN')}">
+            <a class="btn btn-dark " href="/categories/add-category">Add new category</a>
+        </th:block>
+            </div>
+        </div>
+        </div>
+</th:block>

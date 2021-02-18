@@ -4,12 +4,12 @@
             <div class="row">
                 <form method="POST" th:action="@{'/product/{id}' (id=${product?.id})}" enctype="multipart/form-data">
                     <div class="form-group mb-2 mt-2">
-                    <label for="name">Name: </label>
-                    <input class="form-control"
-                           type="text"
-                           name="name"
-                           id="name"
-                           th:value="${product?.name}">
+                        <label for="name">Name: </label>
+                        <input class="form-control"
+                               type="text"
+                               name="name"
+                               id="name"
+                               th:value="${product?.name}">
                     </div>
                     <div class="form-group mb-2">
                         <label>Category: </label>
@@ -23,22 +23,22 @@
                         </select>
                     </div>
                     <div class="form-group">
-                    <div class="form-group mb-2">
-                    <label for="price">Price: </label>
-                    <input class="form-control"
-                           type="number"
-                           name="price"
-                           id="price"
-                           th:value="${product?.price}">
-                    </div>
-                    <div class="form-group mb-2">
-                    <label for="description">Description: </label>
-                    <textarea class="form-control"
-                              rows="3"
-                              name="description"
-                              id="description"
-                              th:text="${product?.description}"></textarea>
-                    </div>
+                        <div class="form-group mb-2">
+                            <label for="price">Price: </label>
+                            <input class="form-control"
+                                   type="number"
+                                   name="price"
+                                   id="price"
+                                   th:value="${product?.price}">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="description">Description: </label>
+                            <textarea class="form-control"
+                                      rows="3"
+                                      name="description"
+                                      id="description"
+                                      th:text="${product?.description}"></textarea>
+                        </div>
                         <label>Size: </label>
                         <label th:each="size: ${sizes}" class="radio-inline mb-2">
                             <input class="mx-2" type="radio" name="size" th:value="${size}" th:text="${size}" th:field="${product.size}">
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group mb-2">
-                    <button class="btn btn-warning">Submit</button>
+                        <button class="btn btn-warning">Submit</button>
                     </div>
 
                     <div class="form-group mb-2">

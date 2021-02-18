@@ -1,6 +1,7 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
 import mk.ukim.finki.deals_n_steals.model.Category;
+import mk.ukim.finki.deals_n_steals.model.exception.CategoryNotFoundException;
 import mk.ukim.finki.deals_n_steals.repository.jpa.CategoryRepository;
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,21 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAll() {
         return this.categoryRepository.findAll();
     }
+
+    @Override
+    public void deleteByName(String name) {
+        this.categoryRepository.deleteById(name);
+    }
+
+    @Override
+    public Category saveCategory(String name) {
+        Category category = this.categoryRepository.findById(name).orElseGet(()->null);
+        if(category!=null){
+            category.setName(name);
+            return this.categoryRepository.save(category);
+        }
+        return this.categoryRepository.save(new Category(name));
+    }
+
+
 }

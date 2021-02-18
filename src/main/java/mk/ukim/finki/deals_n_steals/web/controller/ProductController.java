@@ -61,12 +61,12 @@ public class ProductController {
 
     @PostMapping("/product/{id}")
     public String addNewProduct(@PathVariable Long id,
-                                    @RequestParam String name,
-                                    @RequestParam Size size,
-                                    @RequestParam Float price,
-                                    @RequestParam String category,
-                                    @RequestParam String description,
-                                    @RequestParam MultipartFile image) throws IOException {
+                                @RequestParam String name,
+                                @RequestParam Size size,
+                                @RequestParam Float price,
+                                @RequestParam String category,
+                                @RequestParam String description,
+                                @RequestParam MultipartFile image) throws IOException {
         Product product = productService.findById(id);
         if(product!=null)
             productService.editProduct(id, name, size, price, category, description, image);
