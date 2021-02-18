@@ -15,4 +15,5 @@ public interface ProductService {
     Product save(String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;
     Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;
     void deleteById(Long id);
+    Product save(Product product);
 }

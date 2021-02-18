@@ -71,7 +71,10 @@ public class ShoppingCartController {
                 .findByUsernameAndStatus(username, CartStatus.CREATED);
 
         List<Product> products = shoppingCart.getProducts();
-        products.removeIf(product -> product.getId()==id);
+        Product product = this.productService.findById(id);
+        product.setStock(true);
+        this.productService.save(product);
+        products.removeIf(product1 -> product1.getId()==id);
 
         this.shoppingCartService.save(shoppingCart);
         return "redirect:/shopping-cart";
@@ -80,9 +83,13 @@ public class ShoppingCartController {
     @PostMapping("/clean")
     public String cleanShoppingCart(){
         String username = this.authService.getCurrentUserId();
-
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(username, CartStatus.CREATED);
+        shoppingCart.getProducts().forEach(product -> {
+            product.setStock(true);
+            this.productService.save(product);
+        }
+        );
         shoppingCart.setProducts(new ArrayList<>());
         this.shoppingCartService.save(shoppingCart);
         return "redirect:/shopping-cart";
