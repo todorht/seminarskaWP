@@ -1,0 +1,50 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h3 class="jumbotron-heading">Orders for
+                <th:block th:if="${username}" th:text="${username}"></th:block>
+            </h3>
+        </div>
+    </section>
+
+    <div th:if="${hasError}">
+        <h5 class="text-center text-danger" th:text="${error}"></h5>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12" th:each="order: ${orders}">
+                <h3 th:text="${order.orderNumber}"></h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product : ${order.shoppingCart.products}">
+                            <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
+                            <td th:text="${product.name}">product name</td>
+                            <td th:text="${product.size}">product size</td>
+                            <td th:text="'$'+${product.price}">product price</td>
+                            <td th:text="${product.category?.name}">product category</td>
+                            <td th:text="${product.description}">product description</td>
+                        </tr>
+                        <tr>
+                            <td th:text="${order.orderStatus}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="${order.total}">total price</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
