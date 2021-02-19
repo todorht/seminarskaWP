@@ -1,6 +1,8 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.model.Product;
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
 import mk.ukim.finki.deals_n_steals.service.*;
@@ -41,6 +43,11 @@ public class ProductController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
+//        if(this.authService.getCurrentUser() != null) {
+//            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+//            model.addAttribute("size", shoppingCart.getProducts().size());
+//        }
+//        else model.addAttribute("size", 0);
         model.addAttribute("products", products.stream().filter(Product::isStock).collect(Collectors.toList()));
         model.addAttribute("bodyContent", "products");
         return "master-details";
