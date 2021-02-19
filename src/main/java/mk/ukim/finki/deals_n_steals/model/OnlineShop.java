@@ -15,6 +15,7 @@ public class OnlineShop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     double total;
 
     public OnlineShop(){
