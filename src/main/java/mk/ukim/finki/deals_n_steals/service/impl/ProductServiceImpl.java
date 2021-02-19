@@ -5,8 +5,8 @@ import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.BadArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductNotFoundException;
-import mk.ukim.finki.deals_n_steals.repository.jpa.CategoryRepository;
-import mk.ukim.finki.deals_n_steals.repository.jpa.ProductRepository;
+import mk.ukim.finki.deals_n_steals.repository.CategoryRepository;
+import mk.ukim.finki.deals_n_steals.repository.ProductRepository;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {

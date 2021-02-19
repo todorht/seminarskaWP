@@ -1,4 +1,4 @@
-package mk.ukim.finki.deals_n_steals.repository.jpa;
+package mk.ukim.finki.deals_n_steals.repository;
 
 import mk.ukim.finki.deals_n_steals.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

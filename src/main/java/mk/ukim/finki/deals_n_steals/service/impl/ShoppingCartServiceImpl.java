@@ -4,11 +4,10 @@ import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
-import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.*;
-import mk.ukim.finki.deals_n_steals.repository.jpa.ProductRepository;
-import mk.ukim.finki.deals_n_steals.repository.jpa.ShoppingCartRepository;
-import mk.ukim.finki.deals_n_steals.repository.jpa.UserRepository;
+import mk.ukim.finki.deals_n_steals.repository.ProductRepository;
+import mk.ukim.finki.deals_n_steals.repository.ShoppingCartRepository;
+import mk.ukim.finki.deals_n_steals.repository.UserRepository;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
