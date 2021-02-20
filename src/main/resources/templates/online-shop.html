@@ -1,10 +1,37 @@
 <th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
-
-    <li th:each="month:${perMonth}">
-        <p th:text="${month}"></p>
-    </li>
-
-    <div class="container">
-       <p th:text="${total}"></p>
+    <div>
+        <form method="POST" th:action="@{/online-shop}">
+        <select class="form-control"
+                name="year"
+                th:selected="${year}">
+            <option>2021</option>
+            <option>2022</option>
+            <option>2023</option>
+        </select>
+            <button>Show statistics</button>
+        </form>
     </div>
+    <h2>Statistics for year <th:block th:text="${year}"></th:block> </h2>
+    <table class="table table-hover table-striped table-dark">
+        <thead>
+        <th>Month</th>
+        <th>Profit</th>
+        </thead>
+        <tbody>
+        <tr th:each="month : ${perMonth}">
+            <td th:text="${month.key}"></td>
+            <td th:text="${month.value}"></td>
+        </tr>
+        <tr >
+            <td><b>Year profit</b></td>
+            <td th:text="${perYear}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>All time profit</td>
+            <td th:text="${total}"></td>
+        </tr>
+        </tbody>
+    </table>
 </th:block>

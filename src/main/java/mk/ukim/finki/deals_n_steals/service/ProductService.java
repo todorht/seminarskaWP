@@ -4,6 +4,7 @@ import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

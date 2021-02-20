@@ -2,6 +2,9 @@
     <main class="flex-shrink-0">
         <div class="container">
             <div class="row">
+                <div th:if="${hasError}">
+                    <h5 class="text-center text-danger" th:text="${error}"></h5>
+                </div>
                 <h2 class="d-flex justify-content-center">Login</h2>
                 <form method="POST" th:action="@{/login}">
                     <div class="form-group mb-2 mt-3 d-flex justify-content-center">

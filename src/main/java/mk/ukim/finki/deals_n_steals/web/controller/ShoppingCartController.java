@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +39,14 @@ public class ShoppingCartController {
     }
 
     @GetMapping
-    public String getShoppingCartPage(Model model){
+    public String getShoppingCartPage(Model model, HttpServletRequest request){
+        if(this.authService.getCurrentUser() instanceof String) return "redirect:/login?error=Please, login first";
         if(this.authService.getCurrentUser()==null) return "redirect:/products?error=";
         String username = this.authService.getCurrentUserId();
+
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(username,CartStatus.CREATED);
+
         shoppingCart.setCost((double) shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum());
         this.shoppingCartService.save(shoppingCart);
 //        if(this.authService.getCurrentUserId() != null) {
@@ -58,6 +63,7 @@ public class ShoppingCartController {
 
     @PostMapping("/add-product/{id}")
     public String addProductToShoppingCart(@PathVariable Long id) {
+        if(this.authService.getCurrentUser() instanceof String) return "redirect:/login?error=Please, login first";
         String username = this.authService.getCurrentUserId();
         try {
             this.shoppingCartService.addProductToShoppingCart(username, id);
@@ -65,9 +71,8 @@ public class ShoppingCartController {
         }catch (ProductIsAlreadyInShoppingCartException ex){
             return "redirect:/products?error=" + ex.getMessage();
         }
-
-
     }
+
     @PostMapping("/{id}/remove-product")
     public String removeProductToShoppingCart(@PathVariable Long id) {
 
@@ -99,16 +104,6 @@ public class ShoppingCartController {
         shoppingCart.setProducts(new ArrayList<>());
         this.shoppingCartService.save(shoppingCart);
         return "redirect:/shopping-cart";
-    }
-
-    @PostMapping("/submit-order")
-    public String submitOrder(){
-        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED);
-        shoppingCart.setStatus(CartStatus.FINISH);
-        Order order = new Order(this.authService.getCurrentUserId(),shoppingCart);
-        order.setOrderStatus(OrderStatus.SUCCESS);
-        this.orderService.save(order);
-        return "redirect:/products";
     }
 
     @GetMapping("/list-orders")

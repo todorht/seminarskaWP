@@ -1,4 +1,4 @@
-package mk.ukim.finki.deals_n_steals.repository.jpa;
+package mk.ukim.finki.deals_n_steals.repository;
 
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
@@ -13,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
     ShoppingCart findFirstByUsername(String username);
+    Optional<ShoppingCart> findByUsernameAndStatus(String username, CartStatus status);
 }

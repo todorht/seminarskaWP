@@ -4,7 +4,7 @@ import mk.ukim.finki.deals_n_steals.config.CustomUsernamePasswordAuthenticationP
 import mk.ukim.finki.deals_n_steals.model.User;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUserCredentialsException;
-import mk.ukim.finki.deals_n_steals.repository.jpa.UserRepository;
+import mk.ukim.finki.deals_n_steals.repository.UserRepository;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,13 +33,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+    public Object getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
     public String getCurrentUserId() {
-        return this.getCurrentUser().getUsername();
+        User user = (User) this.getCurrentUser();
+        return user.getUsername();
     }
 }
