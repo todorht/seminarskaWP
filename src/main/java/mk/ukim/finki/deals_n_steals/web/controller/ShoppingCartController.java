@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,8 @@ public class ShoppingCartController {
     }
 
     @GetMapping
-    public String getShoppingCartPage(Model model){
+    public String getShoppingCartPage(Model model, HttpServletRequest request){
+        if(this.authService.getCurrentUser() instanceof String) return "redirect:/login?error=Please, login first";
         if(this.authService.getCurrentUser()==null) return "redirect:/products?error=";
         String username = this.authService.getCurrentUserId();
         ShoppingCart shoppingCart = this.shoppingCartService
@@ -54,6 +57,7 @@ public class ShoppingCartController {
 
     @PostMapping("/add-product/{id}")
     public String addProductToShoppingCart(@PathVariable Long id) {
+        if(this.authService.getCurrentUser() instanceof String) return "redirect:/login?error=Please, login first";
         String username = this.authService.getCurrentUserId();
         try {
             this.shoppingCartService.addProductToShoppingCart(username, id);
