@@ -33,13 +33,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+    public Object getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
     public String getCurrentUserId() {
-        return this.getCurrentUser().getUsername();
+        User user = (User) this.getCurrentUser();
+        return user.getUsername();
     }
 }

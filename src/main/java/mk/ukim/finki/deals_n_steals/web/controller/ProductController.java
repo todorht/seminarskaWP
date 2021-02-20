@@ -83,9 +83,10 @@ public class ProductController {
         Product product = productService.findById(id);
         if(product!=null)
             productService.editProduct(id, name, size, price, category, description, image);
-        else
+        else {
             productService.save(name, size, price, category, description, image);
-        emailService.notifyAllEmails();
+//            emailService.notifyAllEmails();
+        }
         return "redirect:/products";
     }
 //
