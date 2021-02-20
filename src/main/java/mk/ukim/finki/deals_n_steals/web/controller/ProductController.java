@@ -6,12 +6,15 @@ import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
 import mk.ukim.finki.deals_n_steals.service.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -43,12 +46,8 @@ public class ProductController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-//        if(this.authService.getCurrentUser() != null) {
-//            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
-//            model.addAttribute("size", shoppingCart.getProducts().size());
-//        }
-//        else model.addAttribute("size", 0);
-        model.addAttribute("products", products.stream().filter(Product::isStock).collect(Collectors.toList()));
+        List<Product> allProducts = this.productService.findAll();
+        model.addAttribute("products", allProducts);
         model.addAttribute("bodyContent", "products");
         return "master-details";
     }
