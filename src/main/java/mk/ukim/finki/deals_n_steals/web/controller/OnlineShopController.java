@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Controller
-@RequestMapping("/online-shop")
+@RequestMapping("/admin/")
 public class OnlineShopController{
 
     private final OnlineShopService onlineShopService;

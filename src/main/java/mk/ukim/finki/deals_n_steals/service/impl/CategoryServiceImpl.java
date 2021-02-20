@@ -1,8 +1,7 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
 import mk.ukim.finki.deals_n_steals.model.Category;
-import mk.ukim.finki.deals_n_steals.model.exception.CategoryNotFoundException;
-import mk.ukim.finki.deals_n_steals.repository.jpa.CategoryRepository;
+import mk.ukim.finki.deals_n_steals.repository.CategoryRepository;
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import org.springframework.stereotype.Service;
 

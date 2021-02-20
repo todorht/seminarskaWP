@@ -2,7 +2,7 @@ package mk.ukim.finki.deals_n_steals.service.impl;
 
 import mk.ukim.finki.deals_n_steals.model.Email;
 import mk.ukim.finki.deals_n_steals.model.exception.BadEmailFormat;
-import mk.ukim.finki.deals_n_steals.repository.jpa.EmailRepository;
+import mk.ukim.finki.deals_n_steals.repository.EmailRepository;
 import mk.ukim.finki.deals_n_steals.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

@@ -1,14 +1,11 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
 import mk.ukim.finki.deals_n_steals.model.Order;
-import mk.ukim.finki.deals_n_steals.repository.jpa.OnlineShopRepository;
-import mk.ukim.finki.deals_n_steals.repository.jpa.OrderRepository;
+import mk.ukim.finki.deals_n_steals.repository.OrderRepository;
 import mk.ukim.finki.deals_n_steals.service.OnlineShopService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

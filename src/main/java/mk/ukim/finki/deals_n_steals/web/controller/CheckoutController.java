@@ -32,11 +32,26 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public String checkout(Model model) {
         ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+        model.addAttribute("shoppingCart", shoppingCart);
         model.addAttribute("amount", (int) (shoppingCart.getCost() * 100));
         model.addAttribute("stripePublicKey", stripePublicKey);
         model.addAttribute("currency", "mkd");
         model.addAttribute("bodyContent", "checkout");
         return "master-details";
+    }
+
+    @GetMapping("/make-order")
+    public String submitOrder(Model model){
+        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+        model.addAttribute("products",shoppingCart.getProducts());
+        model.addAttribute("bodyContent", "submit-order");
+        return "master-details";
+    }
+
+    @PostMapping("/submit-order")
+    private String makeOrder(Model model){
+
+        return "redirect:/shopping-cart/list-orders";
     }
 
     @PostMapping("/charge")

@@ -49,6 +49,10 @@ public class ShoppingCartController {
 
         shoppingCart.setCost((double) shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum());
         this.shoppingCartService.save(shoppingCart);
+//        if(this.authService.getCurrentUserId() != null) {
+//            model.addAttribute("size", shoppingCart.getProducts().size());
+//        }
+//        else model.addAttribute("size", 0);
         model.addAttribute("shoppingcart", shoppingCart);
         List<Product> products = shoppingCart.getProducts();
         model.addAttribute("username",this.authService.getCurrentUserId());
