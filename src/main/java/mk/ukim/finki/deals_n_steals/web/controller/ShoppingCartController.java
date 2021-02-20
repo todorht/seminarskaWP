@@ -43,8 +43,10 @@ public class ShoppingCartController {
         if(this.authService.getCurrentUser() instanceof String) return "redirect:/login?error=Please, login first";
         if(this.authService.getCurrentUser()==null) return "redirect:/products?error=";
         String username = this.authService.getCurrentUserId();
+
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(username,CartStatus.CREATED);
+
         shoppingCart.setCost((double) shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum());
         this.shoppingCartService.save(shoppingCart);
         model.addAttribute("shoppingcart", shoppingCart);
@@ -65,9 +67,8 @@ public class ShoppingCartController {
         }catch (ProductIsAlreadyInShoppingCartException ex){
             return "redirect:/products?error=" + ex.getMessage();
         }
-
-
     }
+
     @PostMapping("/{id}/remove-product")
     public String removeProductToShoppingCart(@PathVariable Long id) {
 
@@ -99,16 +100,6 @@ public class ShoppingCartController {
         shoppingCart.setProducts(new ArrayList<>());
         this.shoppingCartService.save(shoppingCart);
         return "redirect:/shopping-cart";
-    }
-
-    @PostMapping("/submit-order")
-    public String submitOrder(){
-        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED);
-        shoppingCart.setStatus(CartStatus.FINISH);
-        Order order = new Order(this.authService.getCurrentUserId(),shoppingCart);
-        order.setOrderStatus(OrderStatus.SUCCESS);
-        this.orderService.save(order);
-        return "redirect:/products";
     }
 
     @GetMapping("/list-orders")

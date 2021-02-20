@@ -50,7 +50,7 @@
                         <tr>
                             <td th:text="${shoppingcart.cost}">total price</td>
                             <td>
-                                <form method="POST" th:action="@{/shopping-cart/submit-order}">
+                                <form method="GET" th:action="@{/checkout}">
                                 <button>Submit order</button>
                                 </form>
                             </td>

@@ -1,5 +1,6 @@
 package mk.ukim.finki.deals_n_steals.service;
 
+import mk.ukim.finki.deals_n_steals.model.ChargeRequest;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 
@@ -11,5 +12,6 @@ public interface ShoppingCartService {
    ShoppingCart addProductToShoppingCart(String username, Long id);
    ShoppingCart findByUsernameAndStatus(String username, CartStatus status);
    ShoppingCart save(ShoppingCart shoppingCart);
+   ShoppingCart checkoutShoppingCart(String userId, ChargeRequest chargeRequest);
 
 }

@@ -1,17 +1,20 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
-import mk.ukim.finki.deals_n_steals.model.Product;
-import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
-import mk.ukim.finki.deals_n_steals.model.User;
+import com.stripe.exception.*;
+import com.stripe.model.Charge;
+import mk.ukim.finki.deals_n_steals.model.*;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
-import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.*;
 import mk.ukim.finki.deals_n_steals.repository.jpa.ProductRepository;
 import mk.ukim.finki.deals_n_steals.repository.jpa.ShoppingCartRepository;
 import mk.ukim.finki.deals_n_steals.repository.jpa.UserRepository;
+import mk.ukim.finki.deals_n_steals.service.OrderService;
+import mk.ukim.finki.deals_n_steals.service.PaymentService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +24,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final PaymentService paymentService;
+    private final OrderService orderService;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, UserRepository userRepository, PaymentService paymentService, OrderService orderService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.paymentService = paymentService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -69,6 +76,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }else throw new ProductIsAlreadyInShoppingCartException(product.getName());
 
         shoppingCart.getProducts().add(product);
+        shoppingCart.setCost(shoppingCart.getCost()+product.getPrice());
         return this.shoppingCartRepository.save(shoppingCart);
     }
 
@@ -88,6 +96,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart save(ShoppingCart shoppingCart) {
+        return this.shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Override
+    @Transactional
+    public ShoppingCart checkoutShoppingCart(String userId, ChargeRequest chargeRequest) {
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findByUsernameAndStatus(userId, CartStatus.CREATED)
+                .orElseThrow(() -> new ShoppingCartIsNotActiveException(userId));
+
+        List<Product> products = shoppingCart.getProducts();
+
+        chargeRequest.setCurrency("mkd");
+        Charge charge = null;
+        try {
+            charge = this.paymentService.pay(chargeRequest);
+        } catch (CardException | APIException | AuthenticationException | APIConnectionException | InvalidRequestException e) {
+            throw new TransactionFailedException(userId, e.getMessage());
+        }
+        Order order = new Order(userId,shoppingCart);
+        order.setOrderStatus(OrderStatus.SUCCESS);
+        this.orderService.save(order);
+        shoppingCart.setProducts(products);
+        shoppingCart.setStatus(CartStatus.FINISHED);
         return this.shoppingCartRepository.save(shoppingCart);
     }
 }

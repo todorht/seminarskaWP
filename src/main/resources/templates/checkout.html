@@ -1,0 +1,19 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<form action="/charge" method='POST' id='checkout-form'>
+    <input type="hidden" th:value="${amount}" name="amount"/>
+    <input type="hidden" th:value="${currency}" name="currency"/>
+    <label>Price: <span th:text="${amount/100} + ' ' + ${currency}"/></label>
+    <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
+    <script
+            src='https://checkout.stripe.com/checkout.js'
+            class='stripe-button'
+            th:attr='data-key=${stripePublicKey},
+            data-amount=${amount},
+            data-currency=${currency}'
+            data-name="Deals'n'Steals"
+            data-description="Deals'n'Steals checkout"
+            data-locale='auto'
+            data-zip-code='false'>
+    </script>
+</form>
+</th:block>
