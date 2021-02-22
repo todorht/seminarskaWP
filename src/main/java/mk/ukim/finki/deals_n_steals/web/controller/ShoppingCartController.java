@@ -54,9 +54,7 @@ public class ShoppingCartController {
 //        }
 //        else model.addAttribute("size", 0);
         model.addAttribute("shoppingcart", shoppingCart);
-        List<Product> products = shoppingCart.getProducts();
         model.addAttribute("username",this.authService.getCurrentUserId());
-        model.addAttribute("products", products);
         model.addAttribute("bodyContent","shopping-cart");
         return "master-details";
     }

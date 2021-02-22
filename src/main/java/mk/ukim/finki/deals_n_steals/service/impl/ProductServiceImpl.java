@@ -29,12 +29,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        return (List<Product>) this.productRepository.findAll();
+        return this.productRepository.findAll();
     }
 
     @Override
     public Product findById(Long id) {
-        return this.productRepository.findById(id).orElseGet(()->null);
+        return this.productRepository.findById(id).orElse(null);
     }
 
     @Override
