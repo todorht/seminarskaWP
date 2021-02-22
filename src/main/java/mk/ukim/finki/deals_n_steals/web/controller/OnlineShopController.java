@@ -29,13 +29,13 @@ public class OnlineShopController{
         return "master-details";
     }
 
-    @PostMapping
+    @PostMapping("/profit")
     public String getProfitForYear(@RequestParam int year, Model model){
         model.addAttribute("perMonth",this.onlineShopService.mapYearly(year));
         model.addAttribute("perYear",this.onlineShopService.profitPerYear(year));
         model.addAttribute("year",year);
         model.addAttribute("total", this.onlineShopService.totalProfit());
-        model.addAttribute("bodyContent", "online-shop");
+        model.addAttribute("bodyContent", "statistics");
         return "master-details";
     }
 

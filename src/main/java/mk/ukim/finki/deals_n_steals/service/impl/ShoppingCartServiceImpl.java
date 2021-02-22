@@ -15,6 +15,7 @@ import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,19 +107,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = this.shoppingCartRepository.findByUsernameAndStatus(userId, CartStatus.CREATED)
                 .orElseThrow(() -> new ShoppingCartIsNotActiveException(userId));
 
-        List<Product> products = shoppingCart.getProducts();
-
-        chargeRequest.setCurrency("mkd");
         Charge charge = null;
         try {
             charge = this.paymentService.pay(chargeRequest);
         } catch (CardException | APIException | AuthenticationException | APIConnectionException | InvalidRequestException e) {
             throw new TransactionFailedException(userId, e.getMessage());
         }
-        Order order = new Order(userId,shoppingCart);
-        order.setOrderStatus(OrderStatus.SUCCESS);
-        this.orderService.save(order);
-        shoppingCart.setProducts(new ArrayList<>());
     }
 
     @Override
