@@ -1,63 +1,47 @@
-<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
-    <div class="container">
-        <div class="row">
-            <div th:if="${hasError}">
-                <h5 class="text-center text-danger" th:text="${error}"></h5>
-            </div>
-            <div class="col-12" th:if="${products.size() > 0}">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped table-dark">
-                        <thead>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th></th>
-                        <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-                            <th></th>
-                            <th></th>
-                        </th:block>
-                        </thead>
-                        <tbody>
-                        <tr th:each="product : ${products}">
-                            <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
-                            <td th:text="${product.name}">product name</td>
-                            <td th:text="${product.size}">product size</td>
-                            <td th:text="'$'+${product.price}">product price</td>
-                            <td th:text="${product.category?.name}">product category</td>
-                            <td th:text="${product.description}">product description</td>
-                            <td>
-                                <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
-                                    <th:block >
-                                        <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
-                                    </th:block>
-                                </form>
-                            </td>
-                            <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-                                <td>
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="album py-5 bg-light">
+        <div class="container">
 
-                                    <form method="GET" th:action="@{'/products/edit/{id}' (id=${product.id})}">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col" th:each="product : ${products}">
+                    <div class="card shadow-sm">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="250" th:src="${product.base64Image}" />
+<!--                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>-->
+
+                        <div class="card-body">
+                            <p class="card-text">
+                                <span th:text="${product.name}"></span> <br />
+                                Size: <span th:text="${product.size}"></span> <br />
+                                Price: <span th:text="${product.price}"></span> <br />
+                                Descripton: <span th:text="${product.description}"></span> <br/>
+                                Category: <span th:text="${product.category.name}"></span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <form method="GET" th:action="@{'/products/edit/{id}' (id=${product.id})}" sec:authorize="${hasRole('ROLE_ADMIN')}">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </form>
-
-                                </td>
-                                <td>
-
-                                    <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
+                                    <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}" sec:authorize="${hasRole('ROLE_ADMIN')}">
                                         <button class="btn btn-sm btn-danger">Delete</button>
                                     </form>
-                                </td>
-                            </th:block>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </div>
+                                <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                    <button th:if="${product.stock}" type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                                </form>
+                                <div th:unless="${product.stock}">
+                                    <h5>Product is reserved</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
-                <a class="btn btn-block btn-dark add-product-btn" href="/products/add-product">Add new product</a>
-            </th:block>
+        </div>
+    </div>
+    <div class="container" sec:authorize="${hasRole('ROLE_ADMIN')}">
+        <div class="row">
+            <a class="btn btn-block btn-dark add-product-btn mb-3" href="/products/add-product">Add new product</a>
         </div>
     </div>
 </th:block>

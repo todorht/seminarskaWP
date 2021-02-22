@@ -13,6 +13,11 @@
                                    id="name"
                                    th:value="${category?.name}">
                         </div>
+                        <div class="form-group mb-2 mt-2">
+                            <select  name="category" >
+                                <option th:each="cat:${categories}" th:if="${cat.superCategory==null}" th:text="${cat.name}" th:value="${cat.name}"></option>
+                            </select>
+                        </div>
                         <div class="form-group mb-2">
                             <button class="btn btn-warning">Submit</button>
                         </div>

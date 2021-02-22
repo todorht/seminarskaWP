@@ -8,6 +8,7 @@ import mk.ukim.finki.deals_n_steals.model.exception.ProductNotFoundException;
 import mk.ukim.finki.deals_n_steals.repository.CategoryRepository;
 import mk.ukim.finki.deals_n_steals.repository.ProductRepository;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return this.productRepository.findById(id).orElseGet(()->null);
+        return this.productRepository.findById(id).orElse(null);
     }
 
     @Override

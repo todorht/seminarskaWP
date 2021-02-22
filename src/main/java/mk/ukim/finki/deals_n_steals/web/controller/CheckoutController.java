@@ -1,19 +1,20 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
-import com.stripe.Stripe;
-import lombok.Value;
 import mk.ukim.finki.deals_n_steals.model.ChargeRequest;
+import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+import mk.ukim.finki.deals_n_steals.service.CategoryService;
+import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 
 @Controller
 public class CheckoutController {
@@ -23,10 +24,15 @@ public class CheckoutController {
 
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
+    private final OrderService orderService;
 
-    public CheckoutController(ShoppingCartService shoppingCartService, AuthService authService) {
+    public CheckoutController(CategoryService categoryService,
+                              ShoppingCartService shoppingCartService,
+                              AuthService authService,
+                              OrderService orderService) {
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/checkout")
@@ -49,8 +55,22 @@ public class CheckoutController {
     }
 
     @PostMapping("/submit-order")
+<<<<<<< HEAD
     private String makeOrder(Model model){
 
+=======
+    private String makeOrder(@RequestParam String name,
+                             @RequestParam String surname,
+                             @RequestParam String address,
+                             @RequestParam String email,
+                             @RequestParam String phoneNumber){
+        ShoppingCart shoppingCart = this.shoppingCartService
+                .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+        Order order = new Order(this.authService.getCurrentUserId(),
+                name,surname,address,email,phoneNumber, shoppingCart);
+        this.orderService.save(order);
+        shoppingCart.setProducts(new ArrayList<>());
+>>>>>>> 498090076aa4c9e0c175aa10ecaa35648720c610
         return "redirect:/shopping-cart/list-orders";
     }
 

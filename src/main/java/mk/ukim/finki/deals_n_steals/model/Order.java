@@ -18,6 +18,12 @@ public class Order {
 
     private String username;
 
+    private String name;
+    private String surname;
+    private String address;
+    private String email;
+    private String phoneNumber;
+
     private double total;
 
     private LocalDateTime createTime;
@@ -33,6 +39,22 @@ public class Order {
         this.shoppingCart = shoppingCart;
         this.total = this.shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum();
         this.createTime = LocalDateTime.now();
+    }
+
+    public Order(String username, String name,
+                 String surname, String address,
+                 String email, String phoneNumber,
+                 ShoppingCart shoppingCart) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.shoppingCart = shoppingCart;
+        this.total = this.shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum();
+        this.createTime = LocalDateTime.now();
+        this.orderStatus = OrderStatus.PROCESSING;
     }
 
     public Order() {

@@ -2,6 +2,7 @@ package mk.ukim.finki.deals_n_steals.service;
 
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.print.Pageable;

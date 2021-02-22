@@ -46,9 +46,19 @@ public class ProductController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
+<<<<<<< HEAD
         List<Product> allProducts = this.productService.findAll();
         model.addAttribute("products", allProducts);
+=======
+        model.addAttribute("products", products);
+>>>>>>> 498090076aa4c9e0c175aa10ecaa35648720c610
         model.addAttribute("bodyContent", "products");
+
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+
         return "master-details";
     }
 
