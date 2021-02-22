@@ -10,7 +10,7 @@
                     </th:block>
                     </thead>
                     <tbody>
-                    <tr th:each="category : ${categories}">
+                    <tr th:each="category : ${categories}" th:if="${category.superCategory!=null}">
                         <td class="" th:text="${category.name}">Category Name</td>
                         <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                             <td>

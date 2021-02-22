@@ -18,6 +18,7 @@
                             <option th:each="cat : ${categories}"
                                     th:value="${cat?.name}"
                                     th:text="${cat?.name}"
+                                    th:if="${cat.superCategory!=null}"
                                     th:selected="${product?.category != null && product?.category.name == cat.name}">
                             </option>
                         </select>

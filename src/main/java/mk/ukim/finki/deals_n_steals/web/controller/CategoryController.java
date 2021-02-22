@@ -39,15 +39,15 @@ public class CategoryController {
 
     }
     @GetMapping("/add-category")
-    public String getAddProductPage(Model model) {
+    public String getAddCategoryPage(Model model) {
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("category", new Category());
         model.addAttribute("bodyContent", "add-category");
         return "master-details";
     }
     @PostMapping("/add")
-    public String addCategory(@RequestParam String name){
-        this.categoryService.saveCategory(name);
+    public String addCategory(@RequestParam String name, @RequestParam Category category){
+        this.categoryService.saveCategory(name, category);
         return "redirect:/categories";
     }
     @PostMapping("/delete/{name}")
