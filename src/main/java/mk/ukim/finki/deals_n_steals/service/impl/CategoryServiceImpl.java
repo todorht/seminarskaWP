@@ -36,5 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
         return this.categoryRepository.save(new Category(name, superCategory));
     }
 
+    @Override
+    public List<Category> findAllBySuperCategoryName(String name) {
+        return this.categoryRepository.findAllBySuperCategoryName(name);
+    }
+
 
 }

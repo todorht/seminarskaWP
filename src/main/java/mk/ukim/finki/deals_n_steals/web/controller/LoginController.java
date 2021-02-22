@@ -1,10 +1,9 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
-import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
-import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUserCredentialsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,10 +22,16 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
-    public LoginController(PasswordEncoder passwordEncoder, ShoppingCartService shoppingCartService, AuthService authService) {
+    private final CategoryService categoryService;
+
+    public LoginController(PasswordEncoder passwordEncoder,
+                           ShoppingCartService shoppingCartService,
+                           AuthService authService,
+                           CategoryService categoryService) {
         this.passwordEncoder = passwordEncoder;
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -36,6 +41,12 @@ public class LoginController {
             model.addAttribute("error", error);
         }
         model.addAttribute("bodyContent", "login");
+
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+
         return "master-details";
     }
 

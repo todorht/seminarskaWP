@@ -1,13 +1,12 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.config.CustomUsernamePasswordAuthenticationProvider;
-import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
-import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.PasswordDoNotMatchException;
 import mk.ukim.finki.deals_n_steals.model.exception.UserNameExistsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import mk.ukim.finki.deals_n_steals.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -21,16 +20,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/register")
 public class RegisterController {
 
+    private final CategoryService categoryService;
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
-    private final CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider;
+    private final CustomUsernamePasswordAuthenticationProvider provider;
 
-    public RegisterController(UserService userService, ShoppingCartService shoppingCartService, AuthService authService, CustomUsernamePasswordAuthenticationProvider customUsernamePasswordAuthenticationProvider) {
+    public RegisterController(CategoryService categoryService,
+                              UserService userService,
+                              ShoppingCartService shoppingCartService,
+                              AuthService authService,
+                              CustomUsernamePasswordAuthenticationProvider provider) {
+        this.categoryService = categoryService;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
-        this.customUsernamePasswordAuthenticationProvider = customUsernamePasswordAuthenticationProvider;
+        this.provider = provider;
     }
 
 
@@ -46,6 +51,12 @@ public class RegisterController {
         }catch (PasswordDoNotMatchException | InvalidArgumentsException | UserNameExistsException exception){
             return "redirect:/register?error=" + exception.getMessage();
         }
+
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+
 //        if(this.authService.getCurrentUserId() != null) {
 //            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
 //            model.addAttribute("size", shoppingCart.getProducts().size());
