@@ -13,7 +13,6 @@
 
     <div class="container">
         <div class="row">
-
             <div class="col-12" th:each="order: ${orders}">
                 <h3 th:text="${order.orderNumber}"></h3>
                 <div class="table-responsive">
@@ -27,7 +26,7 @@
                         <th>Description</th>
                         </thead>
                         <tbody>
-                        <tr th:each="product : ${order.shoppingCart.products}">
+                        <tr th:each="product : ${order.products}">
                             <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
                             <td th:text="${product.name}">product name</td>
                             <td th:text="${product.size}">product size</td>

@@ -2,6 +2,7 @@ package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.model.ChargeRequest;
 import mk.ukim.finki.deals_n_steals.model.Order;
+import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
@@ -48,7 +49,8 @@ public class CheckoutController {
 
     @GetMapping("/make-order")
     public String submitOrder(Model model){
-        ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+        ShoppingCart shoppingCart = this.shoppingCartService
+                .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
         model.addAttribute("products",shoppingCart.getProducts());
         model.addAttribute("bodyContent", "submit-order");
         return "master-details";
@@ -59,18 +61,25 @@ public class CheckoutController {
                              @RequestParam String surname,
                              @RequestParam String address,
                              @RequestParam String email,
-                             @RequestParam String phoneNumber){
+                             @RequestParam String phoneNumber,
+                             @RequestParam String payType){
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
         Order order = new Order(this.authService.getCurrentUserId(),
-                name,surname,address,email,phoneNumber, shoppingCart);
-        this.orderService.save(order);
+                name,surname,address,email,phoneNumber);
+        order.setProducts(shoppingCart.getProducts());
+        order.setTotal(order.getProducts().stream().mapToDouble(Product::getPrice).sum());
         shoppingCart.setProducts(new ArrayList<>());
-        return "redirect:/shopping-cart/list-orders";
+        this.orderService.save(order);
+        if(payType.equals("card")){
+
+            return "redirect:/checkout";
+        }
+        else return "redirect:/shopping-cart/list-orders";
     }
 
     @PostMapping("/charge")
-    public String checkout(ChargeRequest chargeRequest) {
+    public String checkout(ChargeRequest chargeRequest){
         try {
             this.shoppingCartService.checkoutShoppingCart(this.authService.getCurrentUserId(), chargeRequest);
             return "redirect:/products?message=Successful Payment";

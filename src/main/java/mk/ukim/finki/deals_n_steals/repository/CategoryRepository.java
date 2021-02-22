@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
     public List<Category> findAllBySuperCategoryName(String name);
+
 }

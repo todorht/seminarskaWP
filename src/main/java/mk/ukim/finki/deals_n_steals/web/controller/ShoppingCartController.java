@@ -122,7 +122,6 @@ public class ShoppingCartController {
         model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
         model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
 
-
         return "master-details";
     }
 }

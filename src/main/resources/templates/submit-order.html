@@ -13,28 +13,34 @@
                 </tr>
                 </tbody>
             </table>
-            <form method="POST" action="/submit-order">
-                    <tr>
-                        <td>
+            <form  method="POST" action="/submit-order">
                     <div class="form-group mb-3 justify-content-center">
                         <label for="name" >Name: </label>
-                        <input class="form-control" type="text" id="name" name="name" placeholder="Name" >
+                        <input class="form-control" type="text" id="name" name="name" placeholder="Name" required/>
                     </div>
                     <div class="form-group mb-3 justify-content-center">
                         <label for="surname" >Surname: </label>
-                        <input class="form-control" type="text" id="surname" name="surname" placeholder="Surname" >
+                        <input class="form-control" type="text" id="surname" name="surname" placeholder="Surname"  required/>
                     </div>
                     <div class="form-group mb-3 justify-content-center">
                         <label for="address">Address: </label>
-                        <input class="form-control" type="text" id="address" name="address" placeholder="Address">
+                        <input class="form-control" type="text" id="address" name="address" placeholder="Address"  required/>
                     </div>
                     <div class="form-group mb-3 justify-content-center">
                         <label for="email">E-mail: </label>
-                        <input class="form-control" type="text" id="email" name="email" placeholder="E-mail" >
+                        <input class="form-control" type="text" id="email" name="email" placeholder="E-mail" required/>
                     </div>
                     <div class="form-group mb-3 justify-content-center">
                          <label for="phoneNumber">Phone number: </label>
-                         <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" placeholder="Phone number" >
+                         <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" placeholder="Phone number" required/>
+                    </div>
+                    <div>
+                        <label class="radio-inline" for="card">Pay with card
+                            <input  name="payType" type="radio" id="card" value="card">
+                        </label>
+                        <label class="radio-inline" for="cash">Pay in cash
+                            <input  name="payType" type="radio" id="cash" value="cash">
+                        </label>
                     </div>
                     <div class="form-group mb-3 justify-content-center">
                         <button class="btn btn-block btn-danger" type="submit">Submit order</button>
