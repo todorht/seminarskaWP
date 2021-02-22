@@ -27,13 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category saveCategory(String name) {
+    public Category saveCategory(String name, Category superCategory) {
         Category category = this.categoryRepository.findById(name).orElseGet(()->null);
         if(category!=null){
             category.setName(name);
             return this.categoryRepository.save(category);
         }
-        return this.categoryRepository.save(new Category(name));
+        return this.categoryRepository.save(new Category(name, superCategory));
     }
 
 

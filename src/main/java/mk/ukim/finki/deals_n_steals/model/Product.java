@@ -6,6 +6,7 @@ import lombok.Value;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,6 +26,8 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     @NotNull
     private Size size;
+
+    private LocalDateTime createAt;
 
     private boolean stock;
 
@@ -47,6 +50,7 @@ public class Product {
         this.category = category;
         this.description = description;
         this.stock=true;
+        this.createAt = LocalDateTime.now();
     }
 
     public Product(String name, Size size, Float price, Category category, String description, String base64Image){
@@ -57,6 +61,7 @@ public class Product {
         this.description = description;
         this.base64Image = base64Image;
         this.stock=true;
+        this.createAt = LocalDateTime.now();
     }
 
 
