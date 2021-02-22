@@ -15,6 +15,7 @@ import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,7 +102,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public ShoppingCart checkoutShoppingCart(String userId, ChargeRequest chargeRequest) {
+    public void checkoutShoppingCart(String userId, ChargeRequest chargeRequest) {
         ShoppingCart shoppingCart = this.shoppingCartRepository.findByUsernameAndStatus(userId, CartStatus.CREATED)
                 .orElseThrow(() -> new ShoppingCartIsNotActiveException(userId));
 
@@ -117,8 +118,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Order order = new Order(userId,shoppingCart);
         order.setOrderStatus(OrderStatus.SUCCESS);
         this.orderService.save(order);
-        shoppingCart.setProducts(products);
-        shoppingCart.setStatus(CartStatus.FINISHED);
-        return this.shoppingCartRepository.save(shoppingCart);
+        shoppingCart.setProducts(new ArrayList<>());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.shoppingCartRepository.deleteById(id);
     }
 }

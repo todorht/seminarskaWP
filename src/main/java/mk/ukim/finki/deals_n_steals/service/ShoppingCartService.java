@@ -12,6 +12,7 @@ public interface ShoppingCartService {
    ShoppingCart addProductToShoppingCart(String username, Long id);
    ShoppingCart findByUsernameAndStatus(String username, CartStatus status);
    ShoppingCart save(ShoppingCart shoppingCart);
-   ShoppingCart checkoutShoppingCart(String userId, ChargeRequest chargeRequest);
+   void checkoutShoppingCart(String userId, ChargeRequest chargeRequest);
+   void deleteById(Long id);
 
 }

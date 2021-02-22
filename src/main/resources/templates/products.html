@@ -27,8 +27,11 @@
                                     </form>
                                 </div>
                                 <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
-                                    <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                                    <button th:if="${product.stock}" type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
                                 </form>
+                                <div th:unless="${product.stock}">
+                                    <h5>Product is reserved</h5>
+                                </div>
                             </div>
                         </div>
                     </div>

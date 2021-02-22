@@ -18,10 +18,10 @@
 
     <div class="container">
         <div class="row">
-            <div th:if="${products.size() <= 0}">
+            <div th:if="${shoppingcart.products.size() <= 0}">
                 <p>Cart is empty.</p>
             </div>
-            <div class="col-12" th:if="${products.size() > 0}">
+            <div class="col-12" th:if="${shoppingcart.products.size() > 0}">
                 <div class="table-responsive">
                     <table class="table table-hover table-striped table-dark">
                         <thead>
@@ -34,7 +34,7 @@
                         <th></th>
                         </thead>
                         <tbody>
-                        <tr th:each="product : ${products}">
+                        <tr th:each="product : ${shoppingcart.products}">
                             <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
                             <td th:text="${product.name}">product name</td>
                             <td th:text="${product.size}">product size</td>
