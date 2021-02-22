@@ -4,17 +4,12 @@ import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
-import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
-import mk.ukim.finki.deals_n_steals.service.AuthService;
-import mk.ukim.finki.deals_n_steals.service.OrderService;
-import mk.ukim.finki.deals_n_steals.service.ProductService;
-import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
+import mk.ukim.finki.deals_n_steals.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +19,16 @@ import java.util.List;
 @RequestMapping("/shopping-cart")
 public class ShoppingCartController {
 
+    private  final CategoryService categoryService;
     private final ShoppingCartService shoppingCartService;
     private final ProductService productService;
     private final OrderService orderService;
     private final AuthService authService;
 
-    public ShoppingCartController(ShoppingCartService shoppingCartService,
+    public ShoppingCartController(CategoryService categoryService, ShoppingCartService shoppingCartService,
                                   ProductService productService,
                                   OrderService orderService, AuthService authService) {
+        this.categoryService = categoryService;
         this.shoppingCartService = shoppingCartService;
         this.productService = productService;
         this.orderService = orderService;
@@ -56,6 +53,12 @@ public class ShoppingCartController {
         model.addAttribute("shoppingcart", shoppingCart);
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("bodyContent","shopping-cart");
+
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+
         return "master-details";
     }
 
@@ -113,6 +116,13 @@ public class ShoppingCartController {
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("orders",orders);
         model.addAttribute("bodyContent","order-list");
+
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+
+
         return "master-details";
     }
 }

@@ -8,5 +8,5 @@ public interface CategoryService {
     List<Category> findAll();
     void deleteByName(String name);
     Category saveCategory(String name, Category superCategory);
-
+    List<Category> findAllBySuperCategoryName(String name);
 }

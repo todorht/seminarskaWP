@@ -5,6 +5,7 @@ import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+import mk.ukim.finki.deals_n_steals.service.CategoryService;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,10 @@ public class CheckoutController {
     private final AuthService authService;
     private final OrderService orderService;
 
-    public CheckoutController(ShoppingCartService shoppingCartService, AuthService authService, OrderService orderService) {
+    public CheckoutController(CategoryService categoryService,
+                              ShoppingCartService shoppingCartService,
+                              AuthService authService,
+                              OrderService orderService) {
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
         this.orderService = orderService;
