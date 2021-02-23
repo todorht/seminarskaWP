@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByOrderStatus(OrderStatus status);
+    Order findByOrderNumberIs(Long number);
+    void removeByOrderNumber(Long number);
 }

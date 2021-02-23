@@ -1,0 +1,58 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12" th:each="order: ${orders}">
+                <h4>Order number: <th:block th:text="${order.orderNumber}"></th:block></h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product : ${order.products}">
+                            <td><img class="img-thumbnail" th:src="${product.base64Image}" width="100"></td>
+                            <td th:text="${product.name}">product name</td>
+                            <td th:text="${product.size}">product size</td>
+                            <td th:text="'MKD'+${product.price}">product price</td>
+                            <td th:text="${product.category?.name}">product category</td>
+                            <td th:text="${product.description}">product description</td>
+                        </tr>
+                        <tr>
+                            <td>ORDER DETAILS</td>
+                            <td>Name: <th:block th:text="${order.name}"></th:block></td>
+                            <td>Surname: <th:block th:text="${order.surname}"></th:block></td>
+                            <td>Address: <th:block th:text="${order.address}"></th:block></td>
+                            <td>Phone: <th:block th:text="${order.phoneNumber}"></th:block></td>
+                            <td>Total price: <th:block th:text="${order.total}"></th:block> </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Order status: <th:block th:text="${order.orderStatus}"></th:block></td>
+                            <td>
+<!--                               TODO: Da ne se prikazuva ako e sprena za ispakjanje-->
+                                <form method="POST" th:action="@{'/confirm-order/{number}' (number=${order.orderNumber})}">
+                                    <button>Confirm order</button>
+                                </form>
+                            </td>
+                            <td>
+<!--                               TODO: Da ne se prikazuva ako e sprena za ispakjanje-->
+                                <form method="POST" th:action="@{'/cancel-order/{number}' (number=${order.orderNumber})}">
+                                    <button>Cancel order</button>
+                                </form>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>

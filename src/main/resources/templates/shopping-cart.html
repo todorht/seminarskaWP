@@ -38,7 +38,7 @@
                             <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
                             <td th:text="${product.name}">product name</td>
                             <td th:text="${product.size}">product size</td>
-                            <td th:text="'$'+${product.price}">product price</td>
+                            <td th:text="'MKD '+${product.price}">product price</td>
                             <td th:text="${product.category?.name}">product category</td>
                             <td th:text="${product.description}">product description</td>
                             <td>
@@ -51,12 +51,12 @@
                             <td th:text="${shoppingcart.cost}">total price</td>
                             <td>
                                 <form method="GET" th:action="@{/make-order}">
-                                <button>Submit order</button>
+                                <button>Make order</button>
                                 </form>
                             </td>
                             <td>
                                 <form method="POST" th:action="@{/shopping-cart/clean}">
-                                    <button>Cancel order</button>
+                                    <button>Clean cart</button>
                                 </form>
                             </td>
                         </tr>
