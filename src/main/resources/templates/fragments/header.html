@@ -1,12 +1,13 @@
 <th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <header xmlns:sec="http://www.w3.org/1999/xhtml">
+
     <nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" onclick="location.href='/home';" href="">Deals'N'Steals</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="collapse navbar-collapse " id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/home">Home</a>
@@ -51,6 +52,18 @@
                     <li sec:authorize="${hasRole('ROLE_ADMIN')}" class="nav-item">
                         <a class="nav-link" href="/admin">Statistics</a>
                     </li>
+                    <li class="nav-item dropdown" sec:authorize="${hasRole('ROLE_ADMIN')}">
+                        <a class="nav-link dropdown-toggle "  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ADMIN
+                            <span th:if="${new > 0}" class="badge1" >-</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                            <button  class="dropdown-item " href="/admin/orders">Orders
+                            <div th:if="${new > 0}" th:text="${new}" class="badge bg-danger"></div></button>
+<!--                            th:if="${new > 0}" th:text="${new}"-->
+                            <a class="dropdown-item" href="/admin/profit">Profit</a>
+                        </ul>
+                    </li>
 
                 </ul>
                 <form  class="d-flex">
@@ -60,7 +73,6 @@
                         </svg>
                         Cart
                         <div th:if="${size > 0}" th:text="${size}" class="badge bg-success"></div>
-<!--                        th:if="${size > 0}" th:text="${size}"-->
                     </button>
                 </form>
                 <div class="d-flex" sec:authorize="!isAuthenticated()">

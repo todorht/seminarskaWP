@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -56,6 +58,17 @@ public class AdminController {
         model.addAttribute("bodyContent", "statistics");
         return "master-details";
     }
+
+    @GetMapping("/profit")
+    public String getProfit(Model model){
+        model.addAttribute("perMonth",this.onlineShopService.mapYearly(LocalDateTime.now().getYear()));
+        model.addAttribute("perYear",this.onlineShopService.profitPerYear(LocalDateTime.now().getYear()));
+        model.addAttribute("year",LocalDateTime.now().getYear());
+        model.addAttribute("total", this.onlineShopService.totalProfit());
+        model.addAttribute("bodyContent", "statistics");
+        return "master-details";
+    }
+
 
     @GetMapping("/orders")
     public String getAllOrders(Model model){
