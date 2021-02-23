@@ -1,9 +1,13 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUserCredentialsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
+
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

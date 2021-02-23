@@ -47,37 +47,6 @@ public class CheckoutController {
         return "master-details";
     }
 
-    @GetMapping("/make-order")
-    public String submitOrder(Model model){
-        ShoppingCart shoppingCart = this.shoppingCartService
-                .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
-        model.addAttribute("products",shoppingCart.getProducts());
-        model.addAttribute("bodyContent", "submit-order");
-        return "master-details";
-    }
-
-    @PostMapping("/submit-order")
-    private String makeOrder(@RequestParam String name,
-                             @RequestParam String surname,
-                             @RequestParam String address,
-                             @RequestParam String email,
-                             @RequestParam String phoneNumber,
-                             @RequestParam String payType){
-        ShoppingCart shoppingCart = this.shoppingCartService
-                .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
-        Order order = new Order(this.authService.getCurrentUserId(),
-                name,surname,address,email,phoneNumber);
-        order.setProducts(shoppingCart.getProducts());
-        order.setTotal(order.getProducts().stream().mapToDouble(Product::getPrice).sum());
-        shoppingCart.setProducts(new ArrayList<>());
-        this.orderService.save(order);
-        if(payType.equals("card")){
-
-            return "redirect:/checkout";
-        }
-        else return "redirect:/shopping-cart/list-orders";
-    }
-
     @PostMapping("/charge")
     public String checkout(ChargeRequest chargeRequest){
         try {

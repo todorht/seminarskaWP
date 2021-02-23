@@ -1,24 +1,20 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.service.OnlineShopService;
+import mk.ukim.finki.deals_n_steals.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 @Controller
-@RequestMapping("/online-shop")
-public class OnlineShopController{
+@RequestMapping("/admin")
+public class AdminController {
 
+    private final OrderService orderService;
     private final OnlineShopService onlineShopService;
 
-    public OnlineShopController(OnlineShopService onlineShopService) {
+    public AdminController(OrderService orderService, OnlineShopService onlineShopService) {
+        this.orderService = orderService;
         this.onlineShopService = onlineShopService;
     }
 
@@ -36,6 +32,13 @@ public class OnlineShopController{
         model.addAttribute("year",year);
         model.addAttribute("total", this.onlineShopService.totalProfit());
         model.addAttribute("bodyContent", "statistics");
+        return "master-details";
+    }
+
+    @GetMapping("/orders")
+    public String getAllOrders(Model model){
+        model.addAttribute("orders", this.orderService.findAll());
+        model.addAttribute("bodyContent", "all-orders");
         return "master-details";
     }
 

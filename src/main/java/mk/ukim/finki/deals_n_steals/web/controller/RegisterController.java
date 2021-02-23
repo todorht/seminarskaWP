@@ -1,12 +1,16 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
 import mk.ukim.finki.deals_n_steals.config.CustomUsernamePasswordAuthenticationProvider;
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Role;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidArgumentsException;
 import mk.ukim.finki.deals_n_steals.model.exception.PasswordDoNotMatchException;
 import mk.ukim.finki.deals_n_steals.model.exception.UserNameExistsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
+
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import mk.ukim.finki.deals_n_steals.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -36,6 +40,7 @@ public class RegisterController {
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
         this.provider = provider;
+
     }
 
 

@@ -7,6 +7,7 @@ import mk.ukim.finki.deals_n_steals.repository.ShoppingCartRepository;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+    public Order findByOrderNumber(Long number) {
+        return this.orderRepository.findByOrderNumberIs(number);
+    }
+
+    @Override
     public List<Order> findByUsername(String username) {
         return this.orderRepository.findAll()
                 .stream()
@@ -40,5 +47,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByStatus(OrderStatus status) {
         return this.orderRepository.findAllByOrderStatus(status);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(Long number) {
+        Order order = this.findByOrderNumber(number);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        order.getProducts().forEach(product -> product.setStock(true));
     }
 }

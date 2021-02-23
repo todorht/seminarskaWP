@@ -115,7 +115,7 @@ public class ShoppingCartController {
         }
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("orders",orders);
-        model.addAttribute("bodyContent","order-list");
+        model.addAttribute("bodyContent","user-orders");
 
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
