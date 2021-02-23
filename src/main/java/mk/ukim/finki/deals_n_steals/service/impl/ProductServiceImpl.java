@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
