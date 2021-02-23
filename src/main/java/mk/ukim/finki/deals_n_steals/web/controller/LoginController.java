@@ -1,9 +1,14 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUserCredentialsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+<<<<<<< HEAD
+=======
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
+>>>>>>> 498090076aa4c9e0c175aa10ecaa35648720c610
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,12 +27,16 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
+<<<<<<< HEAD
+    public LoginController(PasswordEncoder passwordEncoder, ShoppingCartService shoppingCartService, AuthService authService) {
+=======
     private final CategoryService categoryService;
 
     public LoginController(PasswordEncoder passwordEncoder,
                            ShoppingCartService shoppingCartService,
                            AuthService authService,
                            CategoryService categoryService) {
+>>>>>>> 498090076aa4c9e0c175aa10ecaa35648720c610
         this.passwordEncoder = passwordEncoder;
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;

@@ -1,6 +1,5 @@
 package mk.ukim.finki.deals_n_steals;
 
-import mk.ukim.finki.deals_n_steals.service.OrderService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,19 +18,8 @@ import javax.annotation.PostConstruct;
 @EnableJpaRepositories
 public class Application {
 
-    public Application(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    private final OrderService orderService;
-
-    @PostConstruct
-    public void setOrders(){
-
     }
 
     @Bean
