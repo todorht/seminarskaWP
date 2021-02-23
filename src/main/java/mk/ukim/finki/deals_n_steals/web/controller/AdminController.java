@@ -1,7 +1,11 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
+import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
+import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.OnlineShopService;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
+import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +17,31 @@ public class AdminController {
     private final OrderService orderService;
     private final OnlineShopService onlineShopService;
 
-    public AdminController(OrderService orderService, OnlineShopService onlineShopService) {
+    //test
+    private final AuthService authService;
+    private final ShoppingCartService shoppingCartService;
+    //test
+
+    public AdminController(OrderService orderService, OnlineShopService onlineShopService, AuthService authService, ShoppingCartService shoppingCartService) {
         this.orderService = orderService;
         this.onlineShopService = onlineShopService;
+        this.authService = authService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping
     public String getProfitForYear(Model model){
+
+        //test
+        try  {
+            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+            model.addAttribute("size", shoppingCart.getProducts().size());
+        }
+        catch(RuntimeException ex) {
+            model.addAttribute("size", 0);
+
+        }//test
+
         model.addAttribute("total", this.onlineShopService.totalProfit());
         model.addAttribute("bodyContent", "online-shop");
         return "master-details";

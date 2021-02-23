@@ -49,6 +49,16 @@ public class ProductController {
         model.addAttribute("products", products);
         model.addAttribute("bodyContent", "products");
 
+        //test
+        try  {
+            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+            model.addAttribute("size", shoppingCart.getProducts().size());
+        }
+        catch(RuntimeException ex) {
+            model.addAttribute("size", 0);
+
+        }//test
+
         model.addAttribute("categories", this.categoryService.findAll());
         model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
         model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));

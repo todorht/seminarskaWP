@@ -4,7 +4,6 @@ package mk.ukim.finki.deals_n_steals.model;
 import lombok.Data;
 import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -39,6 +39,11 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public String checkout(Model model) {
         ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+
+        //test
+            model.addAttribute("size", shoppingCart.getProducts().size());
+        //test
+
         model.addAttribute("shoppingCart", shoppingCart);
         model.addAttribute("amount", (int) (shoppingCart.getCost() * 100));
         model.addAttribute("stripePublicKey", stripePublicKey);

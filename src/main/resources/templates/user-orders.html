@@ -47,7 +47,7 @@
                             <td>Order status: <th:block th:text="${order.orderStatus}"></th:block></td>
                             <td>
                                 <!--           TODO: Da ne se prikazuva ako ne e pending-->
-                                <form method="POST" th:action="@{'/cancel-order/{number}' (number=${order.orderNumber})}">
+                                <form method="POST" th:action="@{'/shopping-cart/cancel-order/{number}' (number=${order.orderNumber})}">
                                     <button>Cancel order</button>
                                 </form>
                             </td>

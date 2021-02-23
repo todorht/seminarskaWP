@@ -46,10 +46,11 @@ public class ShoppingCartController {
 
         shoppingCart.setCost((double) shoppingCart.getProducts().stream().mapToDouble(Product::getPrice).sum());
         this.shoppingCartService.save(shoppingCart);
-//        if(this.authService.getCurrentUserId() != null) {
-//            model.addAttribute("size", shoppingCart.getProducts().size());
-//        }
-//        else model.addAttribute("size", 0);
+
+        //test
+        model.addAttribute("size", shoppingCart.getProducts().size());
+        //test
+
         model.addAttribute("shoppingcart", shoppingCart);
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("bodyContent","shopping-cart");
@@ -113,6 +114,10 @@ public class ShoppingCartController {
         if(orders.size()<=0){
             return "redirect:/shopping-cart";
         }
+        //test
+        model.addAttribute("size",this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED).getProducts().size());
+        //test
+
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("orders",orders);
         model.addAttribute("bodyContent","user-orders");

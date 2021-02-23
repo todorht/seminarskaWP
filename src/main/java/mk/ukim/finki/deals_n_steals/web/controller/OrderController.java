@@ -34,6 +34,9 @@ public class OrderController {
     public String submitOrder(Model model){
         ShoppingCart shoppingCart = this.shoppingCartService
                 .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+        //test
+        model.addAttribute("size", shoppingCart.getProducts().size());
+        //test
         model.addAttribute("products",shoppingCart.getProducts());
         model.addAttribute("bodyContent", "submit-order");
         return "master-details";
@@ -73,4 +76,12 @@ public class OrderController {
         this.orderService.cancelOrder(number);
         return "redirect:/admin/orders";
     }
+
+    @PostMapping("/shopping-cart/cancel-order/{number}")
+    public String cancelOrderUser(@PathVariable Long number){
+
+        this.orderService.cancelOrder(number);
+        return "redirect:/shopping-cart/list-orders";
+    }
+
 }

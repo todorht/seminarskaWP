@@ -17,26 +17,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     private final CategoryService categoryService;
+    private final ShoppingCartService shoppingCartService;
+    private final AuthService authService;
 
-    public HomeController(CategoryService categoryService) {
+    public HomeController(CategoryService categoryService, ShoppingCartService shoppingCartService, AuthService authService) {
         this.categoryService = categoryService;
+        this.shoppingCartService = shoppingCartService;
+        this.authService = authService;
     }
-
-//    private final ShoppingCartService shoppingCartService;
-//    private final AuthService authService;
-//
-//    public HomeController(ShoppingCartService shoppingCartService, AuthService authService) {
-//        this.shoppingCartService = shoppingCartService;
-//        this.authService = authService;
-//    }
 
     @GetMapping
     public String home(Model model){
-//        if(this.authService.getCurrentUserId() != null) {
-//            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
-//            model.addAttribute("size", shoppingCart.getProducts().size());
-//        }
-//        else model.addAttribute("size", 0);
+        //test
+       try  {
+            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+            model.addAttribute("size", shoppingCart.getProducts().size());
+        }
+        catch(RuntimeException ex) {
+            model.addAttribute("size", 0);
+
+        }//test
         model.addAttribute("bodyContent", "home");
 
         model.addAttribute("categories", this.categoryService.findAll());

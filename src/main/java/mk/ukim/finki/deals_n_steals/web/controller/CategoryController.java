@@ -28,11 +28,17 @@ public class CategoryController {
     @GetMapping
     public String getCategoriesPage(Model model){
         List<Category> categories = this.categoryService.findAll();
-//        if(this.authService.getCurrentUserId() != null) {
-//            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
-//            model.addAttribute("size", shoppingCart.getProducts().size());
-//        }
-//        else model.addAttribute("size", 0);
+
+        //test
+        try  {
+            ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
+            model.addAttribute("size", shoppingCart.getProducts().size());
+        }
+        catch(RuntimeException ex) {
+            model.addAttribute("size", 0);
+
+        }//test
+
         model.addAttribute("categories", categories);
         model.addAttribute("bodyContent", "categories");
         return "master-details";
