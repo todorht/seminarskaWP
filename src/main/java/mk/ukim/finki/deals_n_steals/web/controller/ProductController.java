@@ -84,6 +84,7 @@ public class ProductController {
             case "top" -> this.productService.findAllBySuperCategory("TOP");
             case "bottom" -> this.productService.findAllBySuperCategory("BOTTOM");
             case "accessories" -> this.productService.findAllBySuperCategory("ACCESSORIES");
+            case "collections" -> this.productService.findAllBySuperCategory("COLLECTIONS");
             case "Shirts" -> this.productService.findAllByCategory("Shirts");
             case "Jackets" -> this.productService.findAllByCategory("Jackets");
             case "Hoodies" -> this.productService.findAllByCategory("Hoodies");
@@ -96,6 +97,7 @@ public class ProductController {
             case "Skirts" -> this.productService.findAllByCategory("Skirts");
             case "Earings" -> this.productService.findAllByCategory("Earings");
             case "Bags" -> this.productService.findAllByCategory("Bags");
+            case "Dresses" -> this.productService.findAllByCategory("Dresses");
             default -> this.productService.findAll();
         };
         if(sort == null) {
