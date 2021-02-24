@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping({ "products"})
+@RequestMapping("products")
 public class ProductController {
 
     private final ProductService productService;
@@ -35,16 +39,16 @@ public class ProductController {
         this.orderService = orderService;
     }
 
-    @GetMapping
-    public String getProductsPage(@RequestParam(required = false) String error, Model model) {
-        List<Product> products = this.productService.findAll();
+    @GetMapping({"","/{type}"})
+    public String getProductsPage(@RequestParam(required = false) String error,
+                                  Model model,
+                                  @RequestParam(required = false) String sort,
+                                  @PathVariable(required = false) String type) {
+        List<Product> products = sorted(sort, type);
         if(error!=null){
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
-        model.addAttribute("products", products);
-        model.addAttribute("bodyContent", "products");
 
         //test
         try  {
@@ -56,12 +60,62 @@ public class ProductController {
 
         }//test
 
-        model.addAttribute("categories", this.categoryService.findAll());
-        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
-        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
-        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+        addToModel(model, products);
 
         return "master-details";
+    }
+
+    private void addToModel(Model model, List<Product> products) {
+        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
+        model.addAttribute("products", products);
+        model.addAttribute("bodyContent", "products");
+        model.addAttribute("categories", this.categoryService.findAll());
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOP"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOM"));
+        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+        model.addAttribute("collections", this.categoryService.findAllBySuperCategoryName("COLLECTIONS"));
+    }
+
+    private List<Product> sorted(String sort, String where) {
+        if(where == null)
+            where = "all";
+        List<Product> lista = switch (where) {
+            case "all" -> this.productService.findAll();
+            case "top" -> this.productService.findAllBySuperCategory("TOP");
+            case "bottom" -> this.productService.findAllBySuperCategory("BOTTOM");
+            case "accessories" -> this.productService.findAllBySuperCategory("ACCESSORIES");
+            case "Shirts" -> this.productService.findAllByCategory("Shirts");
+            case "Jackets" -> this.productService.findAllByCategory("Jackets");
+            case "Hoodies" -> this.productService.findAllByCategory("Hoodies");
+            case "T-Shirts" -> this.productService.findAllByCategory("T-Shirts");
+            case "Knitwear" -> this.productService.findAllByCategory("Knitwear");
+            case "Blouses" -> this.productService.findAllByCategory("Blouses");
+            case "Tops" -> this.productService.findAllByCategory("Tops");
+            case "Trousers" -> this.productService.findAllByCategory("Trousers");
+            case "Jeans" -> this.productService.findAllByCategory("Jeans");
+            case "Skirts" -> this.productService.findAllByCategory("Skirts");
+            case "Earings" -> this.productService.findAllByCategory("Earings");
+            case "Bags" -> this.productService.findAllByCategory("Bags");
+            default -> this.productService.findAll();
+        };
+        if(sort == null) {
+            sort = "created-descending";
+        }
+        switch (sort){
+            case "price-ascending":
+                return lista.stream().sorted(Comparator.comparing(Product::getPrice)).collect(Collectors.toList());
+            case "price-descending":
+                return lista.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).collect(Collectors.toList());
+            case "title-ascending":
+                return lista.stream().sorted(Comparator.comparing(Product::getName)).collect(Collectors.toList());
+            case "title-descending":
+                return lista.stream().sorted(Comparator.comparing(Product::getName).reversed()).collect(Collectors.toList());
+            case "created-descending":
+                return lista.stream().sorted(Comparator.comparing(Product::getCreateAt).reversed()).collect(Collectors.toList());
+            case "created-ascending":
+                return lista.stream().sorted(Comparator.comparing(Product::getCreateAt)).collect(Collectors.toList());
+            default: return lista;
+        }
     }
 
     @GetMapping("/add-product")
@@ -87,7 +141,7 @@ public class ProductController {
     @PostMapping("/product/{id}")
     public String addNewProduct(@PathVariable Long id,
                                 @RequestParam String name,
-                                @RequestParam Size size,
+                                @RequestParam(required = false) Size size,
                                 @RequestParam Float price,
                                 @RequestParam String category,
                                 @RequestParam String description,
