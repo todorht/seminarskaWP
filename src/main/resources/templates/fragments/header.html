@@ -3,7 +3,7 @@
 
     <nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" onclick="location.href='/home';" href="">Deals'N'Steals</a>
+            <a class="navbar-brand" onclick="location.href='/home';" href="/home">Deals'N'Steals</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -20,27 +20,27 @@
                             Products
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/products">ALL PRODUCTS</a></li>
+                            <li><a class="dropdown-item" href="/products/all">ALL PRODUCTS</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{'/products' (name='TOPS')}">TOPS</a>
+                            <li><a class="dropdown-item" href="/products/top">TOP</a>
                             <ul>
                                 <li th:each="top : ${tops}">
-                                    <a  class="dropdown-item" th:text="${top.name}" th:href="@{'/products' (name=${top.name})}"></a></li>
+                                    <a  class="dropdown-item" th:text="${top.name}" th:href="@{'/products/'+${top.name}}"></a></li>
                             </ul>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{'/products' (name='BOTTOMS')}">BOTTOMS</a>
+                            <li><a class="dropdown-item" href="/products/bottom">BOTTOM</a>
                                 <ul>
                                     <li th:each="bottom : ${bottoms}">
-                                        <a  class="dropdown-item" th:text="${bottom.name}" th:href="@{'/products' (name=${bottom.name})}"></a>
+                                        <a  class="dropdown-item" th:text="${bottom.name}" th:href="@{'/products/'+${bottom.name}}"></a>
                                     </li>
                                 </ul>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{'/products' (name='ACCESSORIES')}">ACCESSORIES</a>
+                            <li><a class="dropdown-item" href="/products/accessories">ACCESSORIES</a>
                                 <ul>
                                     <li th:each="acc : ${accessories}">
-                                        <a  class="dropdown-item" th:text="${acc.name}" th:href="@{'/products' (name=${acc.name})}"></a>
+                                        <a  class="dropdown-item" th:text="${acc.name}" th:href="@{'/products/'+${acc.name}}"></a>
                                     </li>
                                 </ul>
                             </li>

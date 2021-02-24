@@ -125,9 +125,10 @@ public class ShoppingCartController {
         model.addAttribute("bodyContent","user-orders");
 
         model.addAttribute("categories", this.categoryService.findAll());
-        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOPS"));
-        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOMS"));
+        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOP"));
+        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOM"));
         model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
+        model.addAttribute("collections", this.categoryService.findAllBySuperCategoryName("COLLECTIONS"));
 
         return "master-details";
     }

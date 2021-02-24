@@ -1,5 +1,6 @@
 package mk.ukim.finki.deals_n_steals.repository;
 
+import mk.ukim.finki.deals_n_steals.model.Category;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    List<Product> findAllByCategory_SuperCategory(Category super_category);
+    List<Product> findAllByCategory(Category category);
 }

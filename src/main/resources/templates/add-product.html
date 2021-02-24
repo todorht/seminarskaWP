@@ -9,7 +9,8 @@
                                type="text"
                                name="name"
                                id="name"
-                               th:value="${product?.name}">
+                               th:value="${product?.name}"
+                               required>
                     </div>
                     <div class="form-group mb-2">
                         <label>Category: </label>
@@ -19,7 +20,8 @@
                                     th:value="${cat?.name}"
                                     th:text="${cat?.name}"
                                     th:if="${cat.superCategory!=null}"
-                                    th:selected="${product?.category != null && product?.category.name == cat.name}">
+                                    th:selected="${product?.category != null && product?.category.name == cat.name}"
+                                    required>
                             </option>
                         </select>
                     </div>
@@ -30,7 +32,8 @@
                                    type="number"
                                    name="price"
                                    id="price"
-                                   th:value="${product?.price}">
+                                   th:value="${product?.price}"
+                                    required>
                         </div>
                         <div class="form-group mb-2">
                             <label for="description">Description: </label>

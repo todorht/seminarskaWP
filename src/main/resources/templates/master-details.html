@@ -7,6 +7,26 @@
     <!-- Temelkovski Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script>
+        function changeView(type){
+            let bntlist = document.getElementById("btnlist");
+            let btngrid = document.getElementById("btngrid");
+            let grid  = document.getElementById("grid");
+            let list = document.getElementById("list");
+            if(type==='grid') {
+                btngrid.style.display = "none";
+                btnlist.style.display = "block";
+                grid.style.display = "block";
+                list.style.display = "none";
+            }
+            if(type==='list'){
+                btngrid.style.display = "block";
+                btnlist.style.display = "none";
+                grid.style.display = "none";
+                list.style.display = "block";
+            }
+        }
+    </script>
     <title>Deals'n'Steals</title>
     <!--<link rel="stylesheet" href="src/main/resources/static/css/custom.css">-->
     <style>

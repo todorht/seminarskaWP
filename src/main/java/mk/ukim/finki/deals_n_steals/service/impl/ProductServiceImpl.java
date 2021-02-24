@@ -4,6 +4,7 @@ import mk.ukim.finki.deals_n_steals.model.Category;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.BadArgumentsException;
+import mk.ukim.finki.deals_n_steals.model.exception.CategoryNotFoundException;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductNotFoundException;
 import mk.ukim.finki.deals_n_steals.repository.CategoryRepository;
 import mk.ukim.finki.deals_n_steals.repository.ProductRepository;
@@ -12,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,9 +40,23 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.findById(id).orElse(null);
     }
 
+    @Transactional
+    @Override
+    public List<Product> findAllBySuperCategory(String category) {
+        Category superCategory = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
+        return this.productRepository.findAllByCategory_SuperCategory(superCategory);
+    }
+
+    @Transactional
+    @Override
+    public List<Product> findAllByCategory(String category) {
+        Category cat = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
+        return this.productRepository.findAllByCategory(cat);
+    }
+
     @Override
     public Product save(String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException {
-        if(name==null || name.isEmpty() || size==null)
+        if(name==null || name.isEmpty())
             throw new BadArgumentsException();
         Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
         byte[] bytes = image.getBytes();
@@ -50,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException {
         Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
-        if(name==null || name.isEmpty() || size==null)
+        if(name==null || name.isEmpty())
             throw new BadArgumentsException();
         Category category = this.categoryRepository.findById(cat).orElseThrow(BadArgumentsException::new);
         product.setName(name);
