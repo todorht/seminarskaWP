@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -101,7 +102,10 @@ public class AdminController {
     public String getOrders(Model model){
         model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         model.addAttribute("orders", this.orderService
-                .findAllByStatus(OrderStatus.COMPLETED));
+                .findAllByStatus(OrderStatus.COMPLETED)
+                .stream()
+                .sorted(Comparator.comparing(Order::getCreateTime).reversed())
+                .collect(Collectors.toList()));
         model.addAttribute("bodyContent", "all-orders");
         return "master-details";
     }

@@ -78,7 +78,7 @@ public class OrderController {
         Order order = this.orderService.findByOrderNumber(number);
         order.setOrderStatus(OrderStatus.COMPLETED);
         this.orderService.save(order);
-        return "redirect:/admin/delivered-orders";
+        return "redirect:/admin/confirmed-orders";
     }
 
     @PostMapping("/cancel-order/{number}")
