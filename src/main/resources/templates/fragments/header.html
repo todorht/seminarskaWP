@@ -44,6 +44,14 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/products/collections">COLLECTIONS</a>
+                                <ul>
+                                    <li th:each="coll : ${collections}">
+                                        <a  class="dropdown-item" th:text="${coll.name}" th:href="@{'/products/'+${coll.name}}"></a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li sec:authorize="${hasRole('ROLE_ADMIN')}" class="nav-item">
