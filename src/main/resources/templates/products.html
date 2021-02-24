@@ -15,14 +15,15 @@
                 <option value="created-descending">Date, New to Old</option>
                 <option value="created-ascending">Date, Old to New</option>
             </select>
-            <button onclick="showViewOnSort()">Sort</button>
+            <input id="inputValue" hidden th:value="${state}" name="state">
+            <button  value="">Sort</button>
         </form>
     </div>
     <div class="container">
         <button id="btnlist" onclick="changeView('list')">View as list</button>
         <button id="btngrid" onclick="changeView('grid')" style="display: none">View as grid</button>
     </div>
-    <div class="album py-5 bg-light" id="grid">
+    <div class="album py-5 bg-light" style="display: none" id="grid">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col" th:each="product : ${products}">

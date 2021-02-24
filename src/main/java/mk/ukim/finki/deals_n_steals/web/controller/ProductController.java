@@ -43,12 +43,15 @@ public class ProductController {
     public String getProductsPage(@RequestParam(required = false) String error,
                                   Model model,
                                   @RequestParam(required = false) String sort,
-                                  @PathVariable(required = false) String type) {
+                                  @PathVariable(required = false) String type,
+                                  @RequestParam(required = false) String state) {
         List<Product> products = sorted(sort, type);
         if(error!=null){
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
+
+        model.addAttribute("state",state);
 
         //test
         try  {
@@ -66,6 +69,9 @@ public class ProductController {
     }
 
     private void addToModel(Model model, List<Product> products) {
+
+
+
         model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
         model.addAttribute("products", products);
         model.addAttribute("bodyContent", "products");
