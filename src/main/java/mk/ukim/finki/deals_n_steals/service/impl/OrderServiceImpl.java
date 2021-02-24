@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<Order> findAllByStatus(OrderStatus status) {
         return this.orderRepository.findAllByOrderStatus(status);
     }

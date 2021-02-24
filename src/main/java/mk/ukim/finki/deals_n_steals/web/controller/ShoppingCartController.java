@@ -4,6 +4,7 @@ import mk.ukim.finki.deals_n_steals.model.Order;
 import mk.ukim.finki.deals_n_steals.model.Product;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
 import mk.ukim.finki.deals_n_steals.service.*;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,7 @@ public class ShoppingCartController {
 
         //test
         model.addAttribute("size", shoppingCart.getProducts().size());
+        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
         //test
 
         model.addAttribute("shoppingcart", shoppingCart);

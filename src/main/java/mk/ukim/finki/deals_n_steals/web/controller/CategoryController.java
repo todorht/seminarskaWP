@@ -3,8 +3,10 @@ package mk.ukim.finki.deals_n_steals.web.controller;
 import mk.ukim.finki.deals_n_steals.model.Category;
 import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
+import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,17 +20,19 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final AuthService authService;
     private final ShoppingCartService shoppingCartService;
+    private final OrderService orderService;
 
-    public CategoryController(CategoryService categoryService, AuthService authService, ShoppingCartService shoppingCartService) {
+    public CategoryController(CategoryService categoryService, AuthService authService, ShoppingCartService shoppingCartService, OrderService orderService) {
         this.categoryService = categoryService;
         this.authService = authService;
         this.shoppingCartService = shoppingCartService;
+        this.orderService = orderService;
     }
 
     @GetMapping
     public String getCategoriesPage(Model model){
         List<Category> categories = this.categoryService.findAll();
-
+        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
         //test
         try  {
             ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
