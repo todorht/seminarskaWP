@@ -7,7 +7,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="collapse navbar-collapse " id="navbarSupportedContent">
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/home">Home</a>
@@ -55,11 +55,15 @@
                     <li class="nav-item dropdown" sec:authorize="${hasRole('ROLE_ADMIN')}">
                         <a class="nav-link dropdown-toggle "  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ADMIN
-                            <span th:if="${new > 0}" class="badge1" >-</span>
+                            <span class="badge1" >-</span>
+<!--                            th:if="${new > 0}"-->
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
                             <button  class="dropdown-item " href="/admin/orders">Orders
-                            <div th:if="${new > 0}" th:text="${new}" class="badge bg-danger"></div></button>
+                            <div  class="badge bg-danger"> 0
+<!--                                th:if="${new > 0}" th:text="${new}"-->
+                            </div>
+                            </button>
 <!--                            th:if="${new > 0}" th:text="${new}"-->
                             <a class="dropdown-item" href="/admin/profit">Profit</a>
                         </ul>
