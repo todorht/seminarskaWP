@@ -1,13 +1,13 @@
 package mk.ukim.finki.deals_n_steals.web.controller;
 
-import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.User;
-import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.model.exception.InvalidUserCredentialsException;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
 
 import mk.ukim.finki.deals_n_steals.service.CategoryService;
 
+import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,15 +27,17 @@ public class LoginController {
     private final ShoppingCartService shoppingCartService;
     private final AuthService authService;
     private final CategoryService categoryService;
+    private final OrderService orderService;
 
     public LoginController(PasswordEncoder passwordEncoder,
                            ShoppingCartService shoppingCartService,
                            AuthService authService,
-                           CategoryService categoryService) {
+                           CategoryService categoryService, OrderService orderService) {
         this.passwordEncoder = passwordEncoder;
         this.shoppingCartService = shoppingCartService;
         this.authService = authService;
         this.categoryService = categoryService;
+        this.orderService = orderService;
     }
 
     @GetMapping
