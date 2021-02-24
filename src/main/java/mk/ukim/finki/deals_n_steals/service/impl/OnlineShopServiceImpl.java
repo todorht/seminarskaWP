@@ -1,10 +1,12 @@
 package mk.ukim.finki.deals_n_steals.service.impl;
 
 import mk.ukim.finki.deals_n_steals.model.Order;
+import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.repository.OrderRepository;
 import mk.ukim.finki.deals_n_steals.service.OnlineShopService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.DateFormatSymbols;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,21 +27,23 @@ public class OnlineShopServiceImpl implements OnlineShopService {
     }
 
     @Override
+    @Transactional
     public List<Double> profitForYearPerMonths(int year) {
         List<Double> perMonth = new ArrayList<>(12);
-        List<Order> orders = this.repository.findAll()
+        List<Order> orders = this.repository.findAllByOrderStatus(OrderStatus.COMPLETED)
                 .stream()
-                .filter(order -> order.getCreateTime().getYear()==year)
+                .filter(order -> order.getCreateTime().getYear()==year )
                 .collect(Collectors.toList());
         IntStream.range(0,12).forEach(i->perMonth.add(0.0));
         if(orders.size()>0) {
             IntStream.range(0, 12)
                     .forEach(i ->
                             perMonth.set(i,
-                                    (this.repository.findAll().stream()
-                                            .filter(order -> order.getCreateTime().getMonthValue() == i + 1).count() <= 0) ? 0.0 :
-                                    this.repository.findAll().stream()
-                                            .filter(order ->order.getCreateTime().getYear()==year && order.getCreateTime().getMonthValue() == i + 1)
+                                    (orders.stream()
+                                            .filter(order -> order.getCreateTime().getMonthValue() == i + 1)
+                                            .count() <= 0) ? 0.0 :
+                                    orders.stream()
+                                            .filter(order ->  order.getCreateTime().getMonthValue() == i + 1)
                                             .mapToDouble(Order::getTotal)
                                             .sum()
                     )
@@ -50,17 +54,8 @@ public class OnlineShopServiceImpl implements OnlineShopService {
 
     @Override
     public double totalProfit() {
-        return this.repository.findAll()
+        return this.repository.findAllByOrderStatus(OrderStatus.COMPLETED)
                 .stream()
-                .mapToDouble(Order::getTotal)
-                .sum();
-    }
-
-    @Override
-    public double profitPerYear(int year) {
-        return this.repository.findAll()
-                .stream()
-                .filter(order -> order.getCreateTime().getYear()==year)
                 .mapToDouble(Order::getTotal)
                 .sum();
     }

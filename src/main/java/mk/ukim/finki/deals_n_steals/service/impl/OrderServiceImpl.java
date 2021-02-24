@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
-        return this.orderRepository.findAll();
+        return this.orderRepository.findAll().stream().sorted(Comparator.comparing(Order::getOrderStatus)).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<Order> findAllNewOrders() {
+        List<Order> orderList = this.findAllByStatus(OrderStatus.PENDING);
+        orderList.addAll(this.findAllByStatus(OrderStatus.PAYMENT_RECEIVED));
+
+        return orderList.stream()
+                .sorted(Comparator.comparing(Order::getCreateTime))
+                .collect(Collectors.toList());
     }
 
     @Override

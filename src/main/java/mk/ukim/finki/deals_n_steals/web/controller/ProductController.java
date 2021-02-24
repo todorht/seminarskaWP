@@ -72,7 +72,7 @@ public class ProductController {
 
 
 
-        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         model.addAttribute("products", products);
         model.addAttribute("bodyContent", "products");
         model.addAttribute("categories", this.categoryService.findAll());

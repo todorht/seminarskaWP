@@ -12,6 +12,7 @@ public interface OrderService {
     List<Order> findByUsername(String currentUserId);
     List<Order> findAllByStatus(OrderStatus status);
     List<Order> findAll();
+    List<Order> findAllNewOrders();
     void cancelOrder(Long number);
 
 }

@@ -50,7 +50,7 @@ public class ShoppingCartController {
 
         //test
         model.addAttribute("size", shoppingCart.getProducts().size());
-        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         //test
 
         model.addAttribute("shoppingcart", shoppingCart);
@@ -119,7 +119,7 @@ public class ShoppingCartController {
         //test
         model.addAttribute("size",this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED).getProducts().size());
         //test
-
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         model.addAttribute("username",this.authService.getCurrentUserId());
         model.addAttribute("orders",orders);
         model.addAttribute("bodyContent","user-orders");

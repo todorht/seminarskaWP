@@ -32,7 +32,7 @@ public class CategoryController {
     @GetMapping
     public String getCategoriesPage(Model model){
         List<Category> categories = this.categoryService.findAll();
-        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         //test
         try  {
             ShoppingCart shoppingCart = this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);

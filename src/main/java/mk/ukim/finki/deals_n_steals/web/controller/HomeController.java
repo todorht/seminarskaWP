@@ -42,7 +42,7 @@ public class HomeController {
         catch(RuntimeException ex) {
             model.addAttribute("size", 0);
         }//test
-        model.addAttribute("ordersSize", this.orderService.findAllByStatus(OrderStatus.PENDING).size());
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         model.addAttribute("bodyContent", "home");
 
         model.addAttribute("categories", this.categoryService.findAll());

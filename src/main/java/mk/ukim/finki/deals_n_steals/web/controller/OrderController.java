@@ -36,6 +36,7 @@ public class OrderController {
                 .findByUsernameAndStatus(this.authService.getCurrentUserId(), CartStatus.CREATED);
         //test
         model.addAttribute("size", shoppingCart.getProducts().size());
+        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
         //test
         model.addAttribute("products",shoppingCart.getProducts());
         model.addAttribute("bodyContent", "submit-order");
@@ -58,7 +59,8 @@ public class OrderController {
         shoppingCart.setProducts(new ArrayList<>());
         this.orderService.save(order);
         if(payType.equals("card")){
-            return "redirect:/checkout";
+            Long number = order.getOrderNumber();
+            return "redirect:/checkout/" + number;
         }
         else return "redirect:/shopping-cart/list-orders";
     }
@@ -68,7 +70,15 @@ public class OrderController {
         Order order = this.orderService.findByOrderNumber(number);
         order.setOrderStatus(OrderStatus.DELIVERY_ON_PROCESS);
         this.orderService.save(order);
-        return "redirect:/admin/orders";
+        return "redirect:/admin/new-orders";
+    }
+
+    @PostMapping("/completed-order/{number}")
+    public String completedOrder(@PathVariable Long number){
+        Order order = this.orderService.findByOrderNumber(number);
+        order.setOrderStatus(OrderStatus.COMPLETED);
+        this.orderService.save(order);
+        return "redirect:/admin/delivered-orders";
     }
 
     @PostMapping("/cancel-order/{number}")
@@ -79,7 +89,6 @@ public class OrderController {
 
     @PostMapping("/shopping-cart/cancel-order/{number}")
     public String cancelOrderUser(@PathVariable Long number){
-
         this.orderService.cancelOrder(number);
         return "redirect:/shopping-cart/list-orders";
     }
