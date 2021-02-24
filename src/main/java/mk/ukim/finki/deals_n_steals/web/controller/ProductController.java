@@ -39,11 +39,11 @@ public class ProductController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/{type}")
+    @GetMapping({"","/{type}"})
     public String getProductsPage(@RequestParam(required = false) String error,
                                   Model model,
                                   @RequestParam(required = false) String sort,
-                                  @PathVariable String type) {
+                                  @PathVariable(required = false) String type) {
         List<Product> products = sorted(sort, type);
         if(error!=null){
             model.addAttribute("hasError", true);
@@ -77,6 +77,8 @@ public class ProductController {
     }
 
     private List<Product> sorted(String sort, String where) {
+        if(where == null)
+            where = "all";
         List<Product> lista = switch (where) {
             case "all" -> this.productService.findAll();
             case "top" -> this.productService.findAllBySuperCategory("TOP");
