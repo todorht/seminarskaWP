@@ -49,21 +49,14 @@
                     <li sec:authorize="${hasRole('ROLE_ADMIN')}" class="nav-item">
                         <a class="nav-link" href="/categories">Categories</a>
                     </li>
-                    <li sec:authorize="${hasRole('ROLE_ADMIN')}" class="nav-item">
-                        <a class="nav-link" href="/admin">Statistics</a>
-                    </li>
                     <li class="nav-item dropdown" sec:authorize="${hasRole('ROLE_ADMIN')}">
                         <a class="nav-link dropdown-toggle "  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ADMIN
-                            <span class="badge1" >-</span>
-<!--                            th:if="${new > 0}"-->
+                            <span th:if="${ordersSize > 0}" class="badge1" >-</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                            <button  class="dropdown-item " href="/admin/orders">Orders
-                            <div  class="badge bg-danger"> 0
-<!--                                th:if="${new > 0}" th:text="${new}"-->
-                            </div>
-                            </button>
+                            <a class="dropdown-item " href="/admin/orders">Orders
+                            <div th:if="${ordersSize > 0}" th:text="${ordersSize}" class="badge bg-danger"></div></a>
 <!--                            th:if="${new > 0}" th:text="${new}"-->
                             <a class="dropdown-item" href="/admin/profit">Profit</a>
                         </ul>
