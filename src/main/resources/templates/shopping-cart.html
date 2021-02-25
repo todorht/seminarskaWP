@@ -1,11 +1,7 @@
 <th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <section class="jumbotron text-center">
         <div class="container">
-            <div>
-                <form method="GET" th:action="@{/shopping-cart/list-orders}">
-                    <button>My orders</button>
-                </form>
-            </div>
+
             <h3 class="jumbotron-heading">Shopping cart for
                 <th:block th:if="${username}" th:text="${username}"></th:block>
             </h3>

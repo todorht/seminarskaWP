@@ -62,7 +62,7 @@ public class OrderController {
             Long number = order.getOrderNumber();
             return "redirect:/checkout/" + number;
         }
-        else return "redirect:/shopping-cart/list-orders";
+        else return "redirect:/user/active-orders";
     }
 
     @PostMapping("/confirm-order/{number}")

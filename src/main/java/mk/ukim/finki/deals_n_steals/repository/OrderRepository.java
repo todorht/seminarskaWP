@@ -18,4 +18,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     void removeByOrderNumber(Long number);
 
+    List<Order> findAllByUsername(String username);
 }

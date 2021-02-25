@@ -70,7 +70,6 @@
                             <a class="dropdown-item" href="/admin/profit">Profit</a>
                         </ul>
                     </li>
-
                 </ul>
                 <form  class="d-flex">
                     <button onclick="location.href='/shopping-cart';" type="button" class="btn btn-outline-success  me-2 mb-2 mb-lg-0 ">
@@ -78,15 +77,44 @@
                             <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"></path>
                         </svg>
                         Cart
-                        <div th:if="${size > 0}" th:text="${size}" id="badgeCart" class="badge bg-success"></div>
+                        <div th:if="${size > 0}" th:text="${size}" id="badgeCart" class="badge bg-secondary bg-success"></div>
                     </button>
                 </form>
+                <div class="nav-item dropdown" sec:authorize="isAuthenticated()">
+
+                    <a class="nav-link dropdown-toggle "  id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<!--                        <span th:text="${session.user.getUsername()}"></span>-->
+                        (USERNAME)
+<!--                        <span th:if="${ordersSize > 0}" class="badge1" >-</span>-->
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <li>
+                        <a class="dropdown-item " href="/user">Profile</a>
+                        </li>
+<!--                            <div th:if="${ordersSize > 0}" th:text="${ordersSize}" class="badge bg-danger"></div>-->
+                        <li>
+                        <a class="dropdown-item" href="/user/all-orders">My orders</a>
+                        </li>
+                            <ul>
+                            <li>
+                            <a class="dropdown-item" href="/user/active-orders">Active orders</a>
+                            </li>
+                            <li>
+                            <a class="dropdown-item" href="/user/completed-orders">Completed orders</a>
+                            </li>
+                        </ul>
+
+                    </ul>
+
+                </div>
+
                 <div class="d-flex" sec:authorize="!isAuthenticated()">
                     <a href="/login" class="btn btn-outline-warning" type="submit">Login</a>
                 </div>
                 <div class="d-flex" sec:authorize="isAuthenticated()">
                     <a href="/logout" class="btn btn-outline-warning" type="submit">Logout</a>
                 </div>
+            </div>
             </div>
         </div>
     </nav>

@@ -109,27 +109,4 @@ public class ShoppingCartController {
         this.shoppingCartService.save(shoppingCart);
         return "redirect:/shopping-cart";
     }
-
-    @GetMapping("/list-orders")
-    public String returnOrders(Model model){
-        List<Order> orders = this.orderService.findByUsername(this.authService.getCurrentUserId());
-        if(orders.size()<=0){
-            return "redirect:/shopping-cart";
-        }
-        //test
-        model.addAttribute("size",this.shoppingCartService.findByUsernameAndStatus(this.authService.getCurrentUserId(),CartStatus.CREATED).getProducts().size());
-        //test
-        model.addAttribute("ordersSize", this.orderService.findAllNewOrders().size());
-        model.addAttribute("username",this.authService.getCurrentUserId());
-        model.addAttribute("orders",orders);
-        model.addAttribute("bodyContent","user-orders");
-
-        model.addAttribute("categories", this.categoryService.findAll());
-        model.addAttribute("tops", this.categoryService.findAllBySuperCategoryName("TOP"));
-        model.addAttribute("bottoms", this.categoryService.findAllBySuperCategoryName("BOTTOM"));
-        model.addAttribute("accessories", this.categoryService.findAllBySuperCategoryName("ACCESSORIES"));
-        model.addAttribute("collections", this.categoryService.findAllBySuperCategoryName("COLLECTIONS"));
-
-        return "master-details";
-    }
 }
