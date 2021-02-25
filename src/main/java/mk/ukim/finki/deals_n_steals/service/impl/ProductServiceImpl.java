@@ -9,6 +9,7 @@ import mk.ukim.finki.deals_n_steals.model.exception.ProductNotFoundException;
 import mk.ukim.finki.deals_n_steals.repository.CategoryRepository;
 import mk.ukim.finki.deals_n_steals.repository.ProductRepository;
 import mk.ukim.finki.deals_n_steals.service.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,6 +36,12 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.findAll();
     }
 
+    @Transactional
+    @Override
+    public List<Product> findAll(Pageable pageable) {
+        return this.productRepository.findAllByStock(pageable, true);
+    }
+
     @Override
     public Product findById(Long id) {
         return this.productRepository.findById(id).orElse(null);
@@ -49,9 +56,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
+    public List<Product> findAllBySuperCategory(String category, Pageable pageable) {
+        Category superCategory = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
+        return this.productRepository.findAllByCategory_SuperCategoryAndStock(superCategory, pageable, true);
+    }
+
+    @Transactional
+    @Override
     public List<Product> findAllByCategory(String category) {
         Category cat = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
-        return this.productRepository.findAllByCategory(cat);
+        return this.productRepository.findAllByCategoryAndStock(cat, true);
+    }
+
+    @Transactional
+    @Override
+    public List<Product> findAllByCategory(String category, Pageable pageable) {
+        Category cat = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
+        return this.productRepository.findAllByCategoryAndStock(cat, pageable, true);
     }
 
     @Override

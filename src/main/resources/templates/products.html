@@ -8,15 +8,13 @@
     <div class="container">
         <form align="right">
             <select name="sort">
-                <option value="price-ascending">Lowest Price</option>
-                <option value="price-descending">Highest Price</option>
-                <option value="title-ascending">Alphabetically, A-Z</option>
-                <option value="title-descending">Alphabetically, Z-A</option>
-                <option value="created-descending">Date, New to Old</option>
-                <option value="created-ascending">Date, Old to New</option>
+                <option th:each="sort : ${sortClass}"
+                        th:value="${sort.value}"
+                        th:text="${sort.name}"
+                        th:selected="${sort.value == sorting}"></option>
             </select>
             <input id="inputValue" hidden th:value="${state}" name="state">
-            <button  value="">Sort</button>
+            <button>Sort</button>
         </form>
     </div>
     <div class="container">
@@ -117,5 +115,16 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
+        <ul class="pagination-pointed pagination text-center" role="navigation" aria-label="Pagination">
+            <li th:if="${page>0}" class="pagination-previous"><a id="previous" href="#">Previous</a></li>
+            <li class="current">1</li>
+            <li><a class="pagination-pointed-button" href="#" aria-label="Page 2">2</a></li>
+            <li><a class="pagination-pointed-button" href="#" aria-label="Page 3">3</a></li>
+            <li><a class="pagination-pointed-button" href="#" aria-label="Page 4">4</a></li>
+            <li class="ellipsis" aria-hidden="true"></li>
+            <li class="pagination-next"><a id="next" class="pagination-pointed-button" href="#" aria-label="Next page">Next</a></li>
+        </ul>
     </div>
 </th:block>
