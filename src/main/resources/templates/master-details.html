@@ -10,7 +10,7 @@
     <script>
         flag = true;
         function changeView(type){
-            let inputValue = document.getElementById("inputValue");
+            let inputValue = document.getElementsByClassName("inputValue");
             let btnlist = document.getElementById("btnlist");
             let btngrid = document.getElementById("btngrid");
             let grid  = document.getElementById("grid");
@@ -20,7 +20,9 @@
                 btnlist.style.display = "block";
                 grid.style.display = "block";
                 list.style.display = "none";
-                inputValue.value = "grid";
+                inputValue[0].value = "grid";
+                inputValue[1].value = "grid";
+                inputValue[2].value = "grid";
 
             }
             if(type==='list'){
@@ -28,7 +30,9 @@
                 btnlist.style.display = "none";
                 grid.style.display = "none";
                 list.style.display = "block";
-                inputValue.value = "list";
+                inputValue[0].value = "list";
+                inputValue[1].value = "list";
+                inputValue[2].value = "list";
             }
         }
         function savedState(){

@@ -13,7 +13,7 @@
                         th:text="${sort.name}"
                         th:selected="${sort.value == sorting}"></option>
             </select>
-            <input id="inputValue" hidden th:value="${state}" name="state">
+            <input class="inputValue" hidden th:value="${state}" name="state">
             <button>Sort</button>
         </form>
     </div>
@@ -117,14 +117,19 @@
         </div>
     </div>
     <div class="container">
-        <ul class="pagination-pointed pagination text-center" role="navigation" aria-label="Pagination">
-            <li th:if="${page>0}" class="pagination-previous"><a id="previous" href="#">Previous</a></li>
-            <li class="current">1</li>
-            <li><a class="pagination-pointed-button" href="#" aria-label="Page 2">2</a></li>
-            <li><a class="pagination-pointed-button" href="#" aria-label="Page 3">3</a></li>
-            <li><a class="pagination-pointed-button" href="#" aria-label="Page 4">4</a></li>
-            <li class="ellipsis" aria-hidden="true"></li>
-            <li class="pagination-next"><a id="next" class="pagination-pointed-button" href="#" aria-label="Next page">Next</a></li>
-        </ul>
+        <div class="d-flex align-content-center justify-content-center">
+            <form class="form-inline" th:if="${page!=0}">
+                <input name="page" th:value="${page-1}" hidden />
+                <input name="sort" th:value="${sorting}" hidden />
+                <input class="inputValue" name="state" th:value="${state}" hidden />
+                <button class="btn-dark">Previous</button>
+            </form>
+            <form class="form-inline" align="right">
+                <input name="page" th:value="${page+1}" hidden />
+                <input name="sort" th:value="${sorting}" hidden />
+                <input class="inputValue" name="state" th:value="${state}" hidden />
+                <button class="btn-dark">Next</button>
+            </form>
+        </div>
     </div>
 </th:block>
