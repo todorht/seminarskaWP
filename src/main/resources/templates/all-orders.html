@@ -34,18 +34,22 @@
                             <td>Order number: <th:block th:text="${order.orderNumber}"></th:block></td>
                             <td>Order status: <th:block th:text="${order.orderStatus}"></th:block></td>
                             <td>
-                                <form method="POST" th:action="@{'/confirm-order/{number}' (number=${order.orderNumber})}">
+                                <form method="POST"
+                                      th:if="${#strings.equals(order.orderStatus, 'PENDING')}"
+                                      th:action="@{'/confirm-order/{number}' (number=${order.orderNumber})}">
                                     <button>Confirm order</button>
                                 </form>
                             </td>
                             <td>
                                 <form method="POST"
+                                      th:if="${#strings.equals(order.orderStatus, 'DELIVERY_ON_PROCESS')}"
                                       th:action="@{'/completed-order/{number}' (number=${order.orderNumber})}">
                                     <button>Complete order</button>
                                 </form>
                             </td>
                             <td>
                                 <form method="POST"
+                                      th:if="${#strings.equals(order.orderStatus, 'PENDING')}"
                                       th:action="@{'/cancel-order/{number}' (number=${order.orderNumber})}">
                                     <button>Cancel order</button>
                                 </form>

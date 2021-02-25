@@ -47,7 +47,9 @@
                             <td>Order number: <th:block th:text="${order.orderNumber}"></th:block></td>
                             <td>Order status: <th:block th:text="${order.orderStatus}"></th:block></td>
                             <td>
-                                <form method="POST" th:action="@{'/shopping-cart/cancel-order/{number}' (number=${order.orderNumber})}">
+                                <form method="POST"
+                                      th:if="${#strings.equals(order.orderStatus, 'PENDING')}"
+                                      th:action="@{'/shopping-cart/cancel-order/{number}' (number=${order.orderNumber})}">
                                     <button>Cancel order</button>
                                 </form>
                             </td>
