@@ -19,14 +19,14 @@
                     <label for="surname">Surname: </label>
                     <input class="form-control" type="text" id="surname" name="surname" placeholder="Surname" >
                 </div>
-                <div class="form-group mb-3 justify-content-center">
-                    <label class="radio-inline" for="ROLE_ADMIN">ADMIN
-                        <input  name="role" type="radio" id="ROLE_ADMIN" value="ROLE_ADMIN">
-                    </label>
-                    <label  for="ROLE_USER">USER
-                        <input  name="role"  type="radio" id="ROLE_USER" value="ROLE_USER">
-                    </label>
-                </div>
+<!--                <div class="form-group mb-3 justify-content-center">-->
+<!--                    <label class="radio-inline" for="ROLE_ADMIN">ADMIN-->
+<!--                        <input  name="role" type="radio" id="ROLE_ADMIN" value="ROLE_ADMIN">-->
+<!--                    </label>-->
+<!--                    <label  for="ROLE_USER">USER-->
+<!--                        <input  name="role"  type="radio" id="ROLE_USER" value="ROLE_USER">-->
+<!--                    </label>-->
+<!--                </div>-->
                 <div th:if="${param.error}">
                     <h2 class="text-center text-danger" th:text="${param.error}"></h2>
                 </div>
