@@ -56,7 +56,7 @@ public class CategoryController {
         return "master-details";
     }
     @PostMapping("/add")
-    public String addCategory(@RequestParam String name, @RequestParam Category category){
+    public String addCategory(@RequestParam String name, @RequestParam(required = false) Category category){
         this.categoryService.saveCategory(name, category);
         return "redirect:/categories";
     }
