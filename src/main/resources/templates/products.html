@@ -124,7 +124,7 @@
                 <input class="inputValue" name="state" th:value="${state}" hidden />
                 <button class="btn-dark">Previous</button>
             </form>
-            <form class="form-inline" align="right">
+            <form class="form-inline" align="right" th:if="${page<(pages-1)}">
                 <input name="page" th:value="${page+1}" hidden />
                 <input name="sort" th:value="${sorting}" hidden />
                 <input class="inputValue" name="state" th:value="${state}" hidden />

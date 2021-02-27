@@ -7,6 +7,7 @@ import mk.ukim.finki.deals_n_steals.model.enumeration.Size;
 import mk.ukim.finki.deals_n_steals.model.exception.ProductIsAlreadyInShoppingCartException;
 import mk.ukim.finki.deals_n_steals.model.SortClass;
 import mk.ukim.finki.deals_n_steals.service.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -66,7 +67,7 @@ public class ProductController {
         }
         model.addAttribute("page", page);
 
-        List<Product> products = sorted(sort, category, page);
+        List<Product> products = sorted(sort, category, page, model);
 
         model.addAttribute("state",state);
 
@@ -122,7 +123,7 @@ public class ProductController {
             productService.editProduct(id, name, size, price, category, description, image);
         else {
             productService.save(name, size, price, category, description, image);
-//            emailService.notifyAllEmails();
+            emailService.notifyAllEmails();
         }
         return "redirect:/products";
     }
@@ -149,7 +150,7 @@ public class ProductController {
         model.addAttribute("collections", this.categoryService.findAllBySuperCategoryName("COLLECTIONS"));
     }
 
-    private List<Product> sorted(String sort, String category, Integer pagee) {
+    private List<Product> sorted(String sort, String category, Integer pagee, Model model) {
         Pageable page = null;
 
         switch (sort){
@@ -172,43 +173,81 @@ public class ProductController {
 
         List<Product> lista = null;
 
+        Page<Product> productPage;
+
         switch (category) {
             case "all":
-                return this.productService.findAll(page);
+                productPage = this.productService.findAll(page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "top":
-                return this.productService.findAllBySuperCategory("TOP", page);
+                productPage = this.productService.findAllBySuperCategory("TOP", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "bottom":
-                return this.productService.findAllBySuperCategory("BOTTOM", page);
+                productPage = this.productService.findAllBySuperCategory("BOTTOM", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "accessories":
-                return this.productService.findAllBySuperCategory("ACCESSORIES", page);
+                productPage = this.productService.findAllBySuperCategory("ACCESSORIES", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "collections":
-                return this.productService.findAllBySuperCategory("COLLECTIONS", page);
+                productPage = this.productService.findAllBySuperCategory("COLLECTIONS", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Shirts":
-                return this.productService.findAllByCategory("Shirts", page);
+                productPage = this.productService.findAllByCategory("Shirts", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Jackets":
-                return this.productService.findAllByCategory("Jackets", page);
+                productPage = this.productService.findAllByCategory("Jackets", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Hoodies":
-                return this.productService.findAllByCategory("Hoodies", page);
+                productPage = this.productService.findAllByCategory("Hoodies", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "T-Shirts":
-                return this.productService.findAllByCategory("T-Shirts", page);
+                productPage = this.productService.findAllByCategory("T-Shirts", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Knitwear":
-                return this.productService.findAllByCategory("Knitwear", page);
+                productPage = this.productService.findAllByCategory("Knitwear", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Blouses":
-                return this.productService.findAllByCategory("Blouses", page);
+                productPage = this.productService.findAllByCategory("Blouses", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Tops":
-                return this.productService.findAllByCategory("Tops", page);
+                productPage = this.productService.findAllByCategory("Tops", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Trousers":
-                return this.productService.findAllByCategory("Trousers", page);
+                productPage =  this.productService.findAllByCategory("Trousers", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Jeans":
-                return this.productService.findAllByCategory("Jeans", page);
+                productPage =  this.productService.findAllByCategory("Jeans", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Skirts":
-                return this.productService.findAllByCategory("Skirts", page);
-            case "Earings":
-                return this.productService.findAllByCategory("Earings", page);
+                productPage =  this.productService.findAllByCategory("Skirts", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
+            case "Earrings":
+                productPage =  this.productService.findAllByCategory("Earrings", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Bags":
-                return this.productService.findAllByCategory("Bags", page);
+                productPage =  this.productService.findAllByCategory("Bags", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
             case "Dresses":
-                return this.productService.findAllByCategory("Dresses", page);
+                productPage =  this.productService.findAllByCategory("Dresses", page);
+                model.addAttribute("pages", productPage.getTotalPages());
+                return productPage.get().collect(Collectors.toList());
         }
 
         return lista;
