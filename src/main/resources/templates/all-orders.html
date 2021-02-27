@@ -35,7 +35,7 @@
                             <td>Order status: <th:block th:text="${order.orderStatus}"></th:block></td>
                             <td>
                                 <form method="POST"
-                                      th:if="${#strings.equals(order.orderStatus, 'PENDING')}"
+                                      th:if="${#strings.equals(order.orderStatus, 'PENDING') || #strings.equals(order.orderStatus, 'PAYMENT_RECEIVED')  }"
                                       th:action="@{'/confirm-order/{number}' (number=${order.orderNumber})}">
                                     <button>Confirm order</button>
                                 </form>
