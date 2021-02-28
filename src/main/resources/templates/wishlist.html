@@ -1,0 +1,41 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:sec="http://www.w3.org/1999/xhtml">
+<div class="container">
+    <div class="row">
+        <div th:if="${hasError}">
+            <h5 class="text-center text-danger" th:text="${error}"></h5>
+        </div>
+        <h3>Wishlist</h3>
+        <div class="col-12" th:if="${products.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-dark">
+                    <thead>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${products}">
+                        <td><img class="img-thumbnail" th:src="${product.base64Image}" width="200"></td>
+                        <td th:text="${product.name}">product name</td>
+                        <td th:text="${product.size}">product size</td>
+                        <td th:text="'$'+${product.price}">product price</td>
+                        <td th:text="${product.category?.name}">product category</td>
+                        <td th:text="${product.description}">product description</td>
+                        <td>
+                            <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</th:block>

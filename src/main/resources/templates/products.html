@@ -53,6 +53,9 @@
                                 <div th:unless="${product.stock}">
                                     <h5>Product is reserved</h5>
                                 </div>
+                                <form th:action="@{'/wishlist/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                        <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to wishlist</i></button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -76,6 +79,7 @@
                         <th>Category</th>
                         <th>Description</th>
                         <th></th>
+                        <th></th>
                         <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                             <th></th>
                             <th></th>
@@ -91,8 +95,18 @@
                             <td th:text="${product.description}">product description</td>
                             <td>
                                 <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
-                                    <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
+                                    <button th:if="${product.stock}" type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
                                 </form>
+                                <div th:unless="${product.stock}">
+                                    <h5>Product is reserved</h5>
+                                </div>
+                            </td>
+                            <td>
+                            <td>
+                                <form th:action="@{'/wishlist/add-product/{id}' (id=${product.getId()})}" th:method="POST">
+                                    <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to wishlist</i></button>
+                                </form>
+                            </td>
                             </td>
                             <th:block sec:authorize="${hasRole('ROLE_ADMIN')}">
                                 <td>
