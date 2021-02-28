@@ -84,13 +84,13 @@ public class OrderController {
     @PostMapping("/cancel-order/{number}")
     public String cancelOrder(@PathVariable Long number){
         this.orderService.cancelOrder(number);
-        return "redirect:/admin/orders";
+        return "redirect:/admin/new-orders";
     }
 
     @PostMapping("/shopping-cart/cancel-order/{number}")
     public String cancelOrderUser(@PathVariable Long number){
         this.orderService.cancelOrder(number);
-        return "redirect:/shopping-cart/list-orders";
+        return "redirect:/user/all-orders";
     }
 
 }

@@ -10,4 +10,5 @@ public interface WishlistService {
     Wishlist findByUsername(String username);
     Wishlist addProductToWishlist(String username, Long productId);
     List<Product> getProductsInWishlist(String username);
+    Wishlist deleteProduct(String username, Long productId);
 }

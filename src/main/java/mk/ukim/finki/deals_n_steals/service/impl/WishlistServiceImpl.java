@@ -47,5 +47,13 @@ public class WishlistServiceImpl implements WishlistService {
         return this.findByUsername(username).getProductList();
     }
 
+    @Override
+    @Transactional
+    public Wishlist deleteProduct(String username, Long productId) {
+        Wishlist wishlist = this.findByUsername(username);
+        wishlist.getProductList().removeIf(product -> product.getId()==productId);
+        return this.repository.save(wishlist);
+    }
+
 
 }

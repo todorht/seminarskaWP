@@ -46,4 +46,10 @@ public class WishlistController{
         }
     }
 
+    @PostMapping("/delete/{productId}")
+    public String deleteProduct(@PathVariable Long productId){
+        this.wishlistService.deleteProduct(this.authService.getCurrentUserId(),productId);
+        return "redirect:/wishlist";
+    }
+
 }

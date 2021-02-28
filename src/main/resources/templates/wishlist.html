@@ -17,6 +17,7 @@
                     <th>Category</th>
                     <th>Description</th>
                     <th></th>
+                    <th></th>
                     </thead>
                     <tbody>
                     <tr th:each="product : ${products}">
@@ -26,6 +27,11 @@
                         <td th:text="'$'+${product.price}">product price</td>
                         <td th:text="${product.category?.name}">product category</td>
                         <td th:text="${product.description}">product description</td>
+                        <td>
+                            <form th:action="@{'/wishlist/delete/{id}' (id=${product.getId()})}" th:method="POST">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                         <td>
                             <form th:action="@{'/shopping-cart/add-product/{id}' (id=${product.getId()})}" th:method="POST">
                                 <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-trash">Add to cart</i></button>
