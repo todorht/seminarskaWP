@@ -49,10 +49,10 @@ public class RegisterController {
                            @RequestParam String password,
                            @RequestParam String name,
                            @RequestParam String surname,
-                           @RequestParam Role role,
+//                           @RequestParam Role role,
                            Model model){
         try {
-            this.userService.register(username, password, name, surname, role);
+            this.userService.register(username, password, name, surname, Role.ROLE_USER);
         }catch (PasswordDoNotMatchException | InvalidArgumentsException | UserNameExistsException exception){
             return "redirect:/register?error=" + exception.getMessage();
         }

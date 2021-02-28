@@ -11,12 +11,12 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> findAll();
-    List<Product> findAll(Pageable pageable);
+    Page<Product> findAll(Pageable pageable);
     Product findById(Long id);
     List<Product> findAllBySuperCategory(String category);
-    List<Product> findAllBySuperCategory(String category, Pageable pageable);
+    Page<Product> findAllBySuperCategory(String category, Pageable pageable);
     List<Product> findAllByCategory(String category);
-    List<Product> findAllByCategory(String category, Pageable pageable);
+    Page<Product> findAllByCategory(String category, Pageable pageable);
 
     Product save(String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;
     Product editProduct(Long id, String name, Size size, float price, String cat, String description, MultipartFile image) throws IOException;

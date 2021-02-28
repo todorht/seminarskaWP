@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public List<Product> findAll(Pageable pageable) {
+    public Page<Product> findAll(Pageable pageable) {
         return this.productRepository.findAllByStock(pageable, true);
     }
 
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public List<Product> findAllBySuperCategory(String category, Pageable pageable) {
+    public Page<Product> findAllBySuperCategory(String category, Pageable pageable) {
         Category superCategory = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
         return this.productRepository.findAllByCategory_SuperCategoryAndStock(superCategory, pageable, true);
     }
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public List<Product> findAllByCategory(String category, Pageable pageable) {
+    public Page<Product> findAllByCategory(String category, Pageable pageable) {
         Category cat = this.categoryRepository.findById(category).orElseThrow(CategoryNotFoundException::new);
         return this.productRepository.findAllByCategoryAndStock(cat, pageable, true);
     }
