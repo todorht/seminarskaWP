@@ -64,4 +64,14 @@ public class Product {
         this.createAt = LocalDateTime.now();
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name +
+                ", size=" + size +
+                ", price=" + price +
+                ", category=" + category +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package mk.ukim.finki.deals_n_steals.model;
 
 
+import com.itextpdf.text.Document;
 import lombok.Data;
 import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 
@@ -24,6 +25,9 @@ public class Order {
     private String address;
     private String email;
     private String phoneNumber;
+
+    @Lob
+    private byte[] pdf;
 
     private double total;
 

@@ -55,7 +55,12 @@
                                 </form>
                             </td>
                             <td></td>
-                            <td></td>
+                            <td>
+                                <form method="GET"
+                                      th:action="@{'/pdf/{number}' (number=${order.orderNumber})}">
+                                    <button>PDF</button>
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

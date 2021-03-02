@@ -6,8 +6,10 @@ import mk.ukim.finki.deals_n_steals.model.ShoppingCart;
 import mk.ukim.finki.deals_n_steals.model.enumeration.CartStatus;
 import mk.ukim.finki.deals_n_steals.model.enumeration.OrderStatus;
 import mk.ukim.finki.deals_n_steals.service.AuthService;
+import mk.ukim.finki.deals_n_steals.service.EmailService;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
 import mk.ukim.finki.deals_n_steals.service.ShoppingCartService;
+import mk.ukim.finki.deals_n_steals.util.GeneratePdf;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +24,13 @@ public class OrderController {
 
     private final ShoppingCartService shoppingCartService;
     private final OrderService orderService;
+    private final EmailService emailService;
     private final AuthService authService;
 
-    public OrderController(ShoppingCartService shoppingCartService, OrderService orderService, AuthService authService) {
+    public OrderController(ShoppingCartService shoppingCartService, OrderService orderService, EmailService emailService, AuthService authService) {
         this.shoppingCartService = shoppingCartService;
         this.orderService = orderService;
+        this.emailService = emailService;
         this.authService = authService;
     }
 
@@ -57,7 +61,11 @@ public class OrderController {
         order.setProducts(shoppingCart.getProducts());
         order.setTotal(order.getProducts().stream().mapToDouble(Product::getPrice).sum());
         shoppingCart.setProducts(new ArrayList<>());
-        this.orderService.save(order);
+
+        GeneratePdf generatePdf = new GeneratePdf(orderService);
+        orderService.save(order);
+        generatePdf.orderReport(order);
+        emailService.sendMessageWithAttachment(order.getEmail(),"TEST","test",order.getOrderNumber());
         if(payType.equals("card")){
             Long number = order.getOrderNumber();
             return "redirect:/checkout/" + number;

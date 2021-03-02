@@ -53,7 +53,12 @@
                                     <button>Cancel order</button>
                                 </form>
                             </td>
-                            <td></td>
+                            <td>
+                                <form method="GET"
+                                      th:action="@{'/pdf/{number}' (number=${order.orderNumber})}">
+                                    <button>PDF</button>
+                                </form>
+                            </td>
                             <td></td>
                         </tr>
                         </tbody>
