@@ -123,7 +123,7 @@ public class ProductController {
             productService.editProduct(id, name, size, price, category, description, image);
         else {
             productService.save(name, size, price, category, description, image);
-            emailService.notifyAllEmails();
+//            emailService.notifyAllEmails();
         }
         return "redirect:/products";
     }
