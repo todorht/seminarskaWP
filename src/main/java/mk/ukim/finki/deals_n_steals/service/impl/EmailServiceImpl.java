@@ -21,18 +21,20 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import javax.activation.DataHandler;
 import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.*;
 import java.util.List;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-
-    static String FILEPATH = "/static/nov.pdf";
-    static File file = new File(FILEPATH);
 
     private final EmailRepository emailRepository;
     private final OrderService orderService;
@@ -64,14 +66,14 @@ public class EmailServiceImpl implements EmailService {
                 mimeMessage.setSubject(subject);
                 mimeMessage.setText(text);
                 Order order = orderService.findByOrderNumber(orderNumber);
-                OutputStream os = new FileOutputStream(file);
-                os.write(order.getPdf());
-                os.flush();
-                os.close();
-                ClassPathResource pdf = new ClassPathResource("static/nov.pdf");
-//                FileUtils.writeByteArrayToFile(file, order.getPdf());
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-                helper.addAttachment("nov.pdf",pdf);
+
+                Multipart multipart = new MimeMultipart();
+                MimeBodyPart att = new MimeBodyPart();
+                ByteArrayDataSource bds = new ByteArrayDataSource(order.getPdf(), "application/pdf");
+                att.setDataHandler(new DataHandler(bds));
+                att.setFileName("file.pdf");
+                multipart.addBodyPart(att);
+                mimeMessage.setContent(multipart);
             }
         };
 
