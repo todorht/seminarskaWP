@@ -10,6 +10,7 @@ import mk.ukim.finki.deals_n_steals.service.EmailService;
 import mk.ukim.finki.deals_n_steals.service.OrderService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.InputStreamSource;
@@ -30,7 +31,7 @@ import java.util.List;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    static String FILEPATH = "/static/prazen";
+    static String FILEPATH = "/static/nov.pdf";
     static File file = new File(FILEPATH);
 
     private final EmailRepository emailRepository;
@@ -67,9 +68,10 @@ public class EmailServiceImpl implements EmailService {
                 os.write(order.getPdf());
                 os.flush();
                 os.close();
+                ClassPathResource pdf = new ClassPathResource("static/nov.pdf");
 //                FileUtils.writeByteArrayToFile(file, order.getPdf());
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-                helper.addAttachment("order" + orderNumber + ".pdf", file);
+                helper.addAttachment("nov.pdf",pdf);
             }
         };
 
